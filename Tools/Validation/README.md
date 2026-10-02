@@ -16,6 +16,8 @@ Camera checks cover an unscaled Drone root, preserved visual/collider dimensions
 
 Mesh-buffer reuse checks also cover regenerated vertex positions, topology changes on an existing mesh, restored indices/winding, and independence of already published meshes after scratch-buffer overwrite. For allocation and timing comparisons, run with `-Benchmark`; see [profiling instructions](../Profiling/README.md).
 
+Shared-normal checks compare exact vector components across both axes and corners at startup and after a distant negative-Z teleport, require upward unit normals, verify the central height-gradient direction, and compare edges after a resolution change with noninteger chunk size. The default grid's original noise heights are checked separately. Normals use a reusable one-sample height border and do not require neighboring chunk objects.
+
 ## Neighborhood settings
 
 Select ChunkController in the scene Inspector:

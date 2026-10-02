@@ -18,7 +18,7 @@ public sealed class TerrainBenchmark : MonoBehaviour
     static readonly string[] MarkerNames = {
         "Terrain.StreamingUpdate", "Terrain.SelectChunks", "Terrain.ReleaseChunks", "Terrain.PoolAcquire",
         "Terrain.GenerateChunk", "Terrain.BuildMeshData", "Terrain.ApplyMesh",
-        "Terrain.RecalculateNormals", "Terrain.RecalculateBounds", "Terrain.ProcessQueue"
+        "Terrain.BuildNormals", "Terrain.RecalculateBounds", "Terrain.ProcessQueue"
     };
     static readonly FieldInfo BufferField = typeof(ChunkController).GetField("chunkBufferCount", BindingFlags.Instance | BindingFlags.NonPublic);
     static readonly FieldInfo MarginField = typeof(ChunkController).GetField("chunkRetentionMargin", BindingFlags.Instance | BindingFlags.NonPublic);
@@ -266,7 +266,8 @@ public sealed class TerrainBenchmark : MonoBehaviour
             samples[i].allocated = gcValues[gcOffset + i].Value;
             result.gcAllocatedBytes += samples[i].allocated;
         }
-        // A fresh generator allocates one buffer pair; later chunks reuse it.
+        // Vertex/topology payload alone is at least 3852 bytes at default resolution.
+        // Normals, halo heights and array headers add more; later chunks reuse buffers.
         if ((name == "startup" || name == "budget-startup") && result.gcAllocatedBytes < 3852)
         {
             string values = "";

@@ -114,6 +114,25 @@ public static class V0Validation
         foreach (var mesh in meshes) if (mesh != null) return false;
         return true;
     }
+    static void CheckNormalEdges(string label)
+    {
+        bool edgesMatch = true, valid = true;
+        foreach (var item in Active)
+        {
+            var source = item.Value.GetComponent<MeshFilter>().sharedMesh.normals;
+            foreach (var normal in source)
+                valid &= normal.y > 0 && Mathf.Abs(normal.sqrMagnitude - 1f) < 0.00001f;
+            for (int axis = 0; axis < 2; axis++)
+            {
+                if (!Active.TryGetValue(item.Key + (axis == 0 ? Vector2Int.right : Vector2Int.up), out var neighbor)) continue;
+                var target = neighbor.GetComponent<MeshFilter>().sharedMesh.normals;
+                for (int i = 0; i <= 10; i++)
+                    edgesMatch &= source[axis == 0 ? i * 11 + 10 : 110 + i].Equals(target[axis == 0 ? i * 11 : i]);
+            }
+        }
+        Check(edgesMatch, label + ": identical normals on both shared-edge axes, including corners");
+        Check(valid, label + ": finite unit normals pointing upward");
+    }
     static void CheckMeshReuse(GameObject temporary)
     {
         var publishedMesh = Active[Center].GetComponent<MeshFilter>().sharedMesh;
@@ -132,6 +151,17 @@ public static class V0Validation
         Set(generator, "resolution", 4);
         generator.GenerateMeshData(new Vector2Int(17, -9), 21.5f, temporary);
         Check(scratchMesh.vertexCount == 25 && scratchMesh.triangles.Length == 96 && Mathf.Approximately(scratchMesh.bounds.size.x, 21.5f), "Resolution change rebuilds cached topology on an existing mesh");
+        var sourceNormals = scratchMesh.normals;
+        var neighbor = pool.GetChunkFromPool().Item2;
+        try
+        {
+            generator.GenerateMeshData(new Vector2Int(18, -9), 21.5f, neighbor);
+            var neighborNormals = neighbor.GetComponent<MeshFilter>().sharedMesh.normals;
+            bool edgeMatches = true;
+            for (int i = 0; i <= 4; i++) edgeMatches &= sourceNormals[i * 5 + 4].Equals(neighborNormals[i * 5]);
+            Check(edgeMatches, "Changed resolution and noninteger chunk size preserve shared normals at negative Z");
+        }
+        finally { pool.SetPool((Vector2Int.zero, neighbor)); }
         Set(generator, "resolution", 10);
         generator.GenerateMeshData(Center, 20, temporary);
         var restoredTriangles = scratchMesh.triangles;
@@ -180,8 +210,21 @@ public static class V0Validation
                     Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
                     Check(controller != null && controller.enabled && Active.Count == 25, "Default buffer 2 creates 25 tiles at startup");
                     CheckCoverage("Startup");
+                    CheckNormalEdges("Startup across positive and negative tiles");
                     var mesh = Active[Vector2Int.zero].GetComponent<MeshFilter>().sharedMesh;
                     Check(mesh.vertexCount == 121 && mesh.triangles.Length == 600 && Mathf.Approximately(mesh.bounds.size.x, 20), "V0 mesh dimensions and topology preserved");
+                    var provider = PerlinNoiseHeightProvider.GetInstance();
+                    var startupVertices = mesh.vertices;
+                    bool heightsPreserved = true;
+                    for (int z = 0; z <= 10; z++)
+                        for (int x = 0; x <= 10; x++)
+                            heightsPreserved &= startupVertices[z * 11 + x].y == provider.GetHeilghtForTerrain(new Vector3(1000 + x * 2, 0, 1000 + z * 2), 20);
+                    Check(heightsPreserved, "Default grid preserves original noise heights");
+                    var expectedSlope = new Vector3(
+                        provider.GetHeilghtForTerrain(new Vector3(998, 0, 1000), 20) - provider.GetHeilghtForTerrain(new Vector3(1002, 0, 1000), 20),
+                        4,
+                        provider.GetHeilghtForTerrain(new Vector3(1000, 0, 998), 20) - provider.GetHeilghtForTerrain(new Vector3(1000, 0, 1002), 20)).normalized;
+                    Check(Vector3.Distance(mesh.normals[0], expectedSlope) < 0.00001f, "Border normal uses correct central height gradient without loaded-neighbor dependence");
                     Check((Vector2Int)controller.GetType().GetMethod("GetChunkFromCoord", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(controller, new object[] { new Vector3(-0.1f, 0, -20.1f) }) == new Vector2Int(-1, -2), "Negative coordinates use floor indexing");
                     drone.position = new Vector3(20, 0, 20); Wait(1); break;
                 case 1:
@@ -194,6 +237,7 @@ public static class V0Validation
                     drone.position = new Vector3(1000, 0, -1000); Wait(2); break;
                 case 2:
                     CheckCoverage("Distant negative-Z teleport");
+                    CheckNormalEdges("Distant negative-Z teleport");
                     Check(Active.Count == 25 && Owned.Count == ownedBeforeFailure, "Teleport releases before acquisition and reuses existing objects");
                     pooledBeforeFailure = PooledCount;
                     expectFailure = true; Set(generator, "resolution", 0);

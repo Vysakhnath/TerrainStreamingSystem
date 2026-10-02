@@ -6,7 +6,7 @@ public class TerrainGenerator : MonoBehaviour
     private static readonly ProfilerMarker GenerationMarker = new ProfilerMarker("Terrain.GenerateChunk");
     private static readonly ProfilerMarker DataMarker = new ProfilerMarker("Terrain.BuildMeshData");
     private static readonly ProfilerMarker ApplyMarker = new ProfilerMarker("Terrain.ApplyMesh");
-    private static readonly ProfilerMarker NormalsMarker = new ProfilerMarker("Terrain.RecalculateNormals");
+    private static readonly ProfilerMarker NormalsMarker = new ProfilerMarker("Terrain.BuildNormals");
     private static readonly ProfilerMarker BoundsMarker = new ProfilerMarker("Terrain.RecalculateBounds");
     private float heightMultiplier = 20f;
 
@@ -15,6 +15,8 @@ public class TerrainGenerator : MonoBehaviour
     // Generation is synchronous: Unity copies these buffers into each owned mesh.
     // Concurrent generation would require separate buffers per in-flight request.
     private Vector3[] vertices;
+    private Vector3[] normals;
+    private float[] heights;
     private int[] triangle;
     private int bufferedResolution = -1;
 
@@ -45,18 +47,45 @@ public class TerrainGenerator : MonoBehaviour
             EnsureMeshBuffers();
 
             float stepOffset = chunkSize / resolution;
+            int heightSide = resolution + 3;
+            // One sample outside each edge gives border vertices the same slope
+            // as their neighbors, even when those neighboring chunks are unloaded.
+            for (int z = -1; z <= resolution + 1; z++)
+            {
+                for (int x = -1; x <= resolution + 1; x++)
+                {
+                    // Use the global grid index so a shared sample has the same
+                    // floating-point position regardless of which tile requests it.
+                    var worldPos = new Vector3(
+                        (float)(((long)chunkCoord.x * resolution + x) * (double)chunkSize / resolution + 1000.0),
+                        0,
+                        (float)(((long)chunkCoord.y * resolution + z) * (double)chunkSize / resolution + 1000.0));
+                    heights[(z + 1) * heightSide + x + 1] = perlinNoiseHeightProvider.GetHeilghtForTerrain(worldPos, heightMultiplier);
+                }
+            }
             int vertexIndex = 0;
             for (int z = 0; z <= resolution; z++)
             {
                 for ( int x = 0; x <= resolution; x++)
                 {
                     vertices[vertexIndex] = new Vector3(x * stepOffset, 0, z * stepOffset);
-                    var worldPos = new Vector3((chunkCoord.x * chunkSize) + (x * stepOffset) +1000, 0, (chunkCoord.y * chunkSize) + (z * stepOffset) + 1000);
-                    vertices[vertexIndex].y = perlinNoiseHeightProvider.GetHeilghtForTerrain(worldPos, heightMultiplier);
+                    vertices[vertexIndex].y = heights[(z + 1) * heightSide + x + 1];
                     vertexIndex++;
                 }
             }
-
+            using (NormalsMarker.Auto())
+            {
+                for (int z = 0; z <= resolution; z++)
+                {
+                    for (int x = 0; x <= resolution; x++)
+                    {
+                        int h = (z + 1) * heightSide + x + 1;
+                        normals[z * (resolution + 1) + x] = new Vector3(
+                            heights[h - 1] - heights[h + 1], 2f * stepOffset,
+                            heights[h - heightSide] - heights[h + heightSide]).normalized;
+                    }
+                }
+            }
         }
 
         var terrainMesh = terrainMeshFilter.sharedMesh;
@@ -67,8 +96,7 @@ public class TerrainGenerator : MonoBehaviour
                 terrainMesh.Clear();
             terrainMesh.SetVertices(vertices);
             terrainMesh.triangles = triangle;
-
-            using (NormalsMarker.Auto()) terrainMesh.RecalculateNormals();
+            terrainMesh.SetNormals(normals);
             using (BoundsMarker.Auto()) terrainMesh.RecalculateBounds();
         }
     }
@@ -78,6 +106,8 @@ public class TerrainGenerator : MonoBehaviour
         if (bufferedResolution == resolution) return;
 
         var nextVertices = new Vector3[(resolution + 1) * (resolution + 1)];
+        var nextNormals = new Vector3[nextVertices.Length];
+        var nextHeights = new float[(resolution + 3) * (resolution + 3)];
         var nextTriangles = new int[resolution * resolution * 6];
         int triangleIndex = 0;
         for (int z = 0; z < resolution; z++)
@@ -94,6 +124,8 @@ public class TerrainGenerator : MonoBehaviour
             }
         }
         vertices = nextVertices;
+        normals = nextNormals;
+        heights = nextHeights;
         triangle = nextTriangles;
         bufferedResolution = resolution;
     }

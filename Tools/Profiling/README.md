@@ -61,7 +61,7 @@ Profiler markers are also available in ordinary Editor Play Mode/development bui
 - Terrain.GenerateChunk
 - Terrain.BuildMeshData
 - Terrain.ApplyMesh
-- Terrain.RecalculateNormals
+- Terrain.BuildNormals (height-gradient normals; older captures use Terrain.RecalculateNormals)
 - Terrain.RecalculateBounds
 - Terrain.ProcessQueue
 
