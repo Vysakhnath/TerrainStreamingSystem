@@ -18,10 +18,12 @@ public sealed class TerrainBenchmark : MonoBehaviour
     static readonly string[] MarkerNames = {
         "Terrain.StreamingUpdate", "Terrain.SelectChunks", "Terrain.ReleaseChunks", "Terrain.PoolAcquire",
         "Terrain.GenerateChunk", "Terrain.BuildMeshData", "Terrain.ApplyMesh",
-        "Terrain.RecalculateNormals", "Terrain.RecalculateBounds"
+        "Terrain.RecalculateNormals", "Terrain.RecalculateBounds", "Terrain.ProcessQueue"
     };
     static readonly FieldInfo BufferField = typeof(ChunkController).GetField("chunkBufferCount", BindingFlags.Instance | BindingFlags.NonPublic);
     static readonly FieldInfo MarginField = typeof(ChunkController).GetField("chunkRetentionMargin", BindingFlags.Instance | BindingFlags.NonPublic);
+    static readonly FieldInfo CapField = typeof(ChunkController).GetField("maxChunksPerFrame", BindingFlags.Instance | BindingFlags.NonPublic);
+    static readonly FieldInfo BudgetField = typeof(ChunkController).GetField("generationBudgetMilliseconds", BindingFlags.Instance | BindingFlags.NonPublic);
     ChunkController controller;
     ChunksPoolManager pool;
     Transform drone;
@@ -58,6 +60,8 @@ public sealed class TerrainBenchmark : MonoBehaviour
         public string name;
         public int buffer, frames, activeMax, pooledMax, ownedStart, ownedEnd, ownedMax, gcCollections;
         public double elapsedSeconds;
+        public int pendingMax, pendingEnd, maxChunksPerFrame, coverageFrames;
+        public double budgetMilliseconds, coverageSeconds;
         public long gcAllocatedBytes, unityUsedStart, unityUsedEnd, unityReservedStart, unityReservedEnd, monoUsedStart, monoUsedEnd;
         public Distribution streamingMilliseconds, frameIntervalMilliseconds, gcAllocatedBytesPerFrame;
         public MarkerMetric[] markers;
@@ -66,7 +70,7 @@ public sealed class TerrainBenchmark : MonoBehaviour
     {
         public double streamingMs, frameMs;
         public long allocated;
-        public int active, pooled, owned;
+        public int active, pooled, owned, pending, generated;
     }
     struct MemorySample
     {
@@ -112,6 +116,7 @@ public sealed class TerrainBenchmark : MonoBehaviour
         pool = UnityEngine.Object.FindFirstObjectByType<ChunksPoolManager>();
         drone = UnityEngine.Object.FindFirstObjectByType<DroneMovementController>().transform;
         controller.enabled = false;
+        CapField.SetValue(controller, 1000); BudgetField.SetValue(controller, 0f);
         drone.GetComponent<DroneMovementController>().enabled = false;
         initialize = (Action)typeof(ChunkController).GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic).CreateDelegate(typeof(Action), controller);
         updateStreaming = (Action)typeof(ChunkController).GetMethod("Update", BindingFlags.Instance | BindingFlags.NonPublic).CreateDelegate(typeof(Action), controller);
@@ -153,6 +158,13 @@ public sealed class TerrainBenchmark : MonoBehaviour
                 for (int i = 0; i < 120; i++) yield return null;
                 yield return Measure("soak", buffers[b], 0, soakSeconds);
             }
+            SceneManager.LoadScene("MainScene"); yield return null; yield return null;
+            BufferField.SetValue(controller, buffers[b]); MarginField.SetValue(controller, 1);
+            CapField.SetValue(controller, 4); BudgetField.SetValue(controller, 2f);
+            drone.position = Vector3.zero;
+            yield return Measure("budget-startup", buffers[b], 512, 0);
+            yield return Measure("budget-teleport", buffers[b], 512, 0);
+            yield return Measure("budget-rapid", buffers[b], 512, 0);
         }
         report.scenarios = scenarios.ToArray();
         File.WriteAllText(Path.Combine(outputDirectory, "summary.json"), JsonUtility.ToJson(report, true));
@@ -174,7 +186,9 @@ public sealed class TerrainBenchmark : MonoBehaviour
                 ProfilerRecorderOptions.Default | ProfilerRecorderOptions.CollectOnlyOnCurrentThread);
             if (!recorders[i].Valid) throw new InvalidOperationException("Missing profiler marker: " + MarkerNames[i]);
         }
-        var result = new Scenario { name = name, buffer = buffer, ownedStart = pool.OwnedChunkCount };
+        var result = new Scenario { name = name, buffer = buffer, ownedStart = pool.OwnedChunkCount,
+            maxChunksPerFrame = (int)CapField.GetValue(controller), budgetMilliseconds = (float)BudgetField.GetValue(controller) };
+        bool budgeted = name.StartsWith("budget-");
         gcAllocatedRecorder = ProfilerRecorder.StartNew(ProfilerCategory.Memory, "GC Allocated In Frame", capacity + 4);
         if (!gcAllocatedRecorder.Valid) throw new InvalidOperationException("Missing GC Allocated In Frame counter.");
         yield return null; // Exclude recorder/array setup from the sampled frames.
@@ -193,15 +207,18 @@ public sealed class TerrainBenchmark : MonoBehaviour
             if (name == "continuous") drone.position = new Vector3((count + 1) * 20, 0, (count / 30 % 2) * 20);
             else if (name == "teleport") drone.position = new Vector3((count % 2 == 0 ? 1 : -1) * (50000 + count * 2000), 0, count * 3000);
             else if (name == "soak") drone.position = new Vector3((float)elapsed * 100, 0, Mathf.Sin((float)elapsed * 0.2f) * 100);
+            else if (name == "budget-teleport" && count == 0) drone.position = new Vector3(500000, 0, -500000);
+            else if (name == "budget-rapid" && count < 24) drone.position = new Vector3((count % 2 == 0 ? 1 : -1) * (50000 + count * 2000), 0, count * 3000);
 
             long cpuStart = Stopwatch.GetTimestamp();
-            if (name == "startup") initialize(); else updateStreaming();
+            if (name == "startup" || (name == "budget-startup" && count == 0)) initialize(); else updateStreaming();
             long cpuEnd = Stopwatch.GetTimestamp();
 
             samples[count] = new FrameSample {
                 streamingMs = Seconds(cpuEnd - cpuStart) * 1000,
                 frameMs = count == 0 ? double.NaN : Seconds(frameStart - previous) * 1000,
-                active = controller.ActiveChunkCount, pooled = pool.PooledChunkCount, owned = pool.OwnedChunkCount
+                active = controller.ActiveChunkCount, pooled = pool.PooledChunkCount, owned = pool.OwnedChunkCount,
+                pending = controller.PendingChunkCount, generated = controller.GeneratedChunksThisFrame
             };
             int retentionSide = (buffer + 1) * 2 + 1;
             if (samples[count].active > retentionSide * retentionSide || samples[count].owned != samples[count].active + samples[count].pooled)
@@ -210,6 +227,11 @@ public sealed class TerrainBenchmark : MonoBehaviour
             result.activeMax = Math.Max(result.activeMax, samples[count].active);
             result.pooledMax = Math.Max(result.pooledMax, samples[count].pooled);
             result.ownedMax = Math.Max(result.ownedMax, samples[count].owned);
+            result.pendingMax = Math.Max(result.pendingMax, samples[count].pending);
+            if (samples[count].pending > (buffer * 2 + 1) * (buffer * 2 + 1) || samples[count].generated > result.maxChunksPerFrame || controller.GenerationPaused)
+                throw new InvalidOperationException("Queue/count budget invariant failed.");
+            bool covered = budgeted && (name != "budget-rapid" || count >= 23) && controller.PendingChunkCount == 0;
+            if (covered) { result.coverageFrames = count + 1; result.coverageSeconds = Seconds(cpuEnd - start); }
             if (duration > 0 && elapsed >= nextMemory)
             {
                 memories[memoryCount++] = Memory(elapsed);
@@ -218,12 +240,15 @@ public sealed class TerrainBenchmark : MonoBehaviour
             previous = frameStart;
             count++;
             yield return null;
+            if (covered) break;
             elapsed = Seconds(Stopwatch.GetTimestamp() - start);
         }
         result.gcCollections = GC.CollectionCount(0) - collectionsBefore;
         result.frames = count;
         result.elapsedSeconds = Seconds(Stopwatch.GetTimestamp() - start);
         result.ownedEnd = pool.OwnedChunkCount;
+        result.pendingEnd = controller.PendingChunkCount;
+        if (budgeted && result.pendingEnd != 0) throw new InvalidOperationException("Coverage did not complete within the measurement window.");
         var endMemory = Memory(result.elapsedSeconds);
         result.unityUsedEnd = endMemory.unityUsed; result.unityReservedEnd = endMemory.unityReserved; result.monoUsedEnd = endMemory.monoUsed;
         memories[memoryCount++] = endMemory;
@@ -242,7 +267,7 @@ public sealed class TerrainBenchmark : MonoBehaviour
             result.gcAllocatedBytes += samples[i].allocated;
         }
         // A fresh generator allocates one buffer pair; later chunks reuse it.
-        if (name == "startup" && result.gcAllocatedBytes < 3852)
+        if ((name == "startup" || name == "budget-startup") && result.gcAllocatedBytes < 3852)
         {
             string values = "";
             foreach (var value in gcValues) values += value.Value + ":" + value.Count + ",";
@@ -273,6 +298,8 @@ public sealed class TerrainBenchmark : MonoBehaviour
         int required = (buffer * 2 + 1) * (buffer * 2 + 1);
         if ((name == "startup" && generated != required) || (name == "teleport" && generated != required * frameLimit))
             throw new InvalidOperationException("Recorded generation count does not match scenario workload: " + generated);
+        if ((name == "budget-startup" || name == "budget-teleport") && generated != required)
+            throw new InvalidOperationException("Budgeted generation count does not match completed coverage.");
         var cpu = new double[count]; var frames = new List<double>(); var allocations = new double[count];
         for (int i = 0; i < count; i++) { cpu[i] = samples[i].streamingMs; allocations[i] = samples[i].allocated; if (!double.IsNaN(samples[i].frameMs)) frames.Add(samples[i].frameMs); }
         result.streamingMilliseconds = Stats(cpu);
@@ -281,8 +308,8 @@ public sealed class TerrainBenchmark : MonoBehaviour
         string prefix = Path.Combine(outputDirectory, "buffer-" + buffer + "-" + name);
         using (var writer = new StreamWriter(prefix + "-frames.csv"))
         {
-            writer.WriteLine("sample,streaming_ms,frame_interval_ms,gc_allocated_in_frame_bytes,active,pooled,owned");
-            for (int i = 0; i < count; i++) writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1:F6},{2:F6},{3},{4},{5},{6}", i, samples[i].streamingMs, samples[i].frameMs, samples[i].allocated, samples[i].active, samples[i].pooled, samples[i].owned));
+            writer.WriteLine("sample,streaming_ms,frame_interval_ms,gc_allocated_in_frame_bytes,active,pooled,owned,pending,generated");
+            for (int i = 0; i < count; i++) writer.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1:F6},{2:F6},{3},{4},{5},{6},{7},{8}", i, samples[i].streamingMs, samples[i].frameMs, samples[i].allocated, samples[i].active, samples[i].pooled, samples[i].owned, samples[i].pending, samples[i].generated));
         }
         using (var writer = new StreamWriter(prefix + "-memory.csv"))
         {

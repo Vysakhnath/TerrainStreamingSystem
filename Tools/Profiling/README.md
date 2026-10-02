@@ -14,10 +14,20 @@ The runner builds an isolated Windows development player, runs the terrain corre
 
 Each buffer (2, 3, 5) starts with a fresh MainScene and retention margin 1:
 
+The original control workloads explicitly use a 1,000-chunk cap and no time limit so their full-generation behavior remains comparable to the earlier baseline. The queue implementation still participates in selection and generation, so this is not identical old code.
+
 1. Startup: one measured call creates all 25, 49, or 121 required tiles. This is terrain startup, not process/scene load time. Managed/native call paths are warmed with a one-tile scene before comparisons; each measured buffer then starts with fresh terrain in the same process.
 2. Continuous movement: 240 frames, advancing one 20-unit chunk in X per frame. Z alternates by one tile every 30 frames. This is deliberate boundary-crossing stress, not normal flight speed.
 3. Teleports: 24 disjoint neighborhoods at distant positive/negative coordinates, one per frame.
 4. Buffer-5 soak: 120 pool-warm-up movement frames, 120 settling frames, then 180 seconds of traversal at 100 units/second with sinusoidal Z movement.
+
+After each buffer's control workloads, a fresh scene runs with a four-chunk cap and 2 ms soft budget:
+
+- `budget-startup`: hold position and drain initial requests.
+- `budget-teleport`: teleport once, hold position, and drain the new neighborhood.
+- `budget-rapid`: teleport to 24 disjoint neighborhoods in successive frames, then hold the final position until coverage completes.
+
+These scenarios fail unless pending requests drain within 512 sampled frames. Summary fields include configured limits, peak/final pending counts, and coverage frames/seconds. Rapid coverage latency is measured from the first teleport, including all 24 movement frames. Raw CSVs add pending/generated counts. A chunk may exceed the time limit because mesh work cannot be preempted; the count cap remains the hard limit. Generation is synchronous on the main thread, spread across Update calls, without Tasks, Jobs, or background threads.
 
 The target frame rate is 60 and VSync is disabled. Frame intervals include pacing, engine work, scheduling jitter, and the harness. They are not CPU-only frame time or a rendered FPS benchmark.
 
@@ -53,6 +63,7 @@ Profiler markers are also available in ordinary Editor Play Mode/development bui
 - Terrain.ApplyMesh
 - Terrain.RecalculateNormals
 - Terrain.RecalculateBounds
+- Terrain.ProcessQueue
 
 Attach Unity's CPU Profiler to a rendered development player to inspect these scopes under a real camera/render workload. This automated baseline provides no GPU, draw-call, texture-upload, or rendered frame-time measurements.
 

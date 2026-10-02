@@ -25,6 +25,16 @@ A tile is released when its maximum X/Z coordinate offset exceeds buffer plus ma
 
 Outgoing tiles return to the pool before missing tiles are acquired. Teleports can therefore reuse released objects within the same update. The pool retains its historical high-water count; it is not automatically trimmed when the buffer shrinks.
 
+## Generation queue
+
+`Max Chunks Per Frame` defaults to 4. `Generation Budget Milliseconds` defaults to 2; 0 disables the time limit while retaining the chunk-count cap. The budget includes selection/release work and is checked after each completed chunk. At least one chunk is attempted when work is pending. Mesh generation and selection cannot be interrupted, so this is a soft time budget, not a hard frame-time ceiling.
+
+Missing coordinates are queued once, sorted by squared distance from the Drone's current tile (coordinate order breaks ties). Each neighborhood/settings change replaces the pending list with currently missing required tiles. Pending requests own no GameObjects or meshes. Previously active tiles within retention remain active. Stationary Update calls drain the queue; terrain coverage fills gradually after startup and teleports. Start and Update share a frame guard so they cannot each consume a separate generation allowance in the same Unity frame.
+
+`ActiveChunkCount`, `PendingChunkCount`, `GeneratedChunksThisFrame`, and `GenerationPaused` expose current status. A generation failure returns the acquired object, keeps the request queued, and pauses further generation to prevent repeated error logs. Moving to another tile or changing the buffer/retention settings rebuilds requests and resumes generation; restoring the generator's configuration alone does not retry automatically.
+
+The correctness harness lets normal startup finish, then uses a large count cap and no time limit for existing coverage checks. Separate budgeted checks use one chunk per frame, rapid teleports, a shrinking buffer, and a tiny time limit. Budgeted profiling scenarios report time/frames to full coverage as well as per-frame CPU costs.
+
 The expected failure test sets resolution to zero and accepts only the generator's matching ArgumentOutOfRangeException. It verifies recovery at the next chunk boundary; automatic stationary retry is not implemented.
 
 The harness records one exact Unity Editor Search startup exception separately in editor-search-warning.txt when present. This editor indexing error is excluded by message and stack signature. Other errors fail validation.

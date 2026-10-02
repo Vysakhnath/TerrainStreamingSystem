@@ -75,6 +75,7 @@ public static class V0Validation
         passed.Add(label);
     }
     static void Wait(int next) { stage = next; targetFrame = Time.frameCount + 3; }
+    static void StepStreaming() => controller.GetType().GetMethod("Update", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(controller, null);
     static void Log(string message, string trace, LogType type)
     {
         if (!running || (type != LogType.Error && type != LogType.Exception && type != LogType.Assert)) return;
@@ -152,6 +153,7 @@ public static class V0Validation
         if (pendingFailure != null) { Fail(pendingFailure); return; }
         if (EditorApplication.timeSinceStartup > deadline) { Fail(new Exception("Runtime validation timed out")); return; }
         if (!EditorApplication.isPlaying || EditorApplication.isCompiling || Time.frameCount < targetFrame) return;
+        if (stage < 12 && stage != 3 && controller != null && controller.PendingChunkCount > 0) return;
         try
         {
             switch (stage)
@@ -162,6 +164,8 @@ public static class V0Validation
                     pool = UnityEngine.Object.FindFirstObjectByType<ChunksPoolManager>();
                     generator = UnityEngine.Object.FindFirstObjectByType<TerrainGenerator>();
                     drone = GameObject.Find("Drone").transform;
+                    if (controller.PendingChunkCount > 0) return;
+                    Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
                     Check(controller != null && controller.enabled && Active.Count == 25, "Default buffer 2 creates 25 tiles at startup");
                     CheckCoverage("Startup");
                     var mesh = Active[Vector2Int.zero].GetComponent<MeshFilter>().sharedMesh;
@@ -214,6 +218,8 @@ public static class V0Validation
                     controller = UnityEngine.Object.FindFirstObjectByType<ChunkController>();
                     pool = UnityEngine.Object.FindFirstObjectByType<ChunksPoolManager>();
                     drone = GameObject.Find("Drone").transform;
+                    if (controller.PendingChunkCount > 0) return;
+                    Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
                     Check(oldProvider == null && PerlinNoiseHeightProvider.GetInstance() != null && Active.Count == 25, "Scene reload initializes provider and configured neighborhood");
                     Check(AllDestroyed(oldMeshes), "Owned meshes released on scene unload");
                     Set(controller, "chunkBufferCount", 3); Wait(7); break;
@@ -246,6 +252,36 @@ public static class V0Validation
                     Set(controller, "chunkBufferCount", -1); Set(controller, "chunkRetentionMargin", -1);
                     controller.GetType().GetMethod("OnValidate", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(controller, null);
                     Check((int)Get(controller, "chunkBufferCount") == 0 && (int)Get(controller, "chunkRetentionMargin") == 0, "Inspector validation clamps negative radii");
+                    Set(controller, "maxChunksPerFrame", 1); Set(controller, "chunkBufferCount", 3);
+                    controller.enabled = false;
+                    drone.position = new Vector3(5000, 0, -5000); Wait(12); break;
+                case 12:
+                    StepStreaming();
+                    Check(Active.Count == 1 && Active.ContainsKey(Center) && controller.PendingChunkCount == 48, "Budget-one teleport activates nearest tile and leaves 48 queued requests");
+                    Check(controller.GeneratedChunksThisFrame <= 1, "Per-frame chunk cap observed");
+                    drone.position = new Vector3(-5000, 0, 5000); Wait(13); break;
+                case 13:
+                    StepStreaming();
+                    Check(Active.ContainsKey(Center) && controller.PendingChunkCount <= 48, "Rapid teleport replaces pending requests and prioritizes new center");
+                    Check(Owned.Count == Active.Count + PooledCount, "Queued cancellation does not acquire or orphan objects");
+                    foreach (var key in Active.Keys) Check(Mathf.Abs(key.x - Center.x) <= 3 && Mathf.Abs(key.y - Center.y) <= 3, "No obsolete tiles become active");
+                    Set(controller, "chunkBufferCount", 1); Wait(14); break;
+                case 14:
+                    StepStreaming();
+                    if (controller.PendingChunkCount > 0) return;
+                    CheckCoverage("Budgeted stationary queue drain after shrink");
+                    Check(Active.Count == 9, "Queue shrink removes stale outer-ring requests");
+                    Set(controller, "chunkBufferCount", 3); Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0.000001f);
+                    drone.position = new Vector3(8000, 0, 8000); Wait(15); break;
+                case 15:
+                    StepStreaming();
+                    Check(controller.GeneratedChunksThisFrame == 1 && controller.PendingChunkCount > 0, "Tiny time budget allows one indivisible chunk and defers remaining work");
+                    Set(controller, "generationBudgetMilliseconds", 0f); Wait(16); break;
+                case 16:
+                    StepStreaming();
+                    if (controller.PendingChunkCount > 0) return;
+                    CheckCoverage("Queue completes after time limit disabled");
+                    Check(Active.Count == 49, "Stationary updates finish requested square without duplicates");
                     File.WriteAllLines("runtime-checks.txt", passed);
                     running = false; SessionState.SetBool("V0ValidationRunning", false);
                     EditorApplication.isPlaying = false;

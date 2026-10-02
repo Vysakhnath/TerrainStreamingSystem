@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Stopwatch = System.Diagnostics.Stopwatch;
 using Unity.Profiling;
 using UnityEngine;
 
@@ -7,8 +8,12 @@ public class ChunkController : MonoBehaviour
     private static readonly ProfilerMarker StreamingMarker = new ProfilerMarker("Terrain.StreamingUpdate");
     private static readonly ProfilerMarker SelectionMarker = new ProfilerMarker("Terrain.SelectChunks");
     private static readonly ProfilerMarker ReleaseMarker = new ProfilerMarker("Terrain.ReleaseChunks");
+    private static readonly ProfilerMarker GenerationQueueMarker = new ProfilerMarker("Terrain.ProcessQueue");
 
     public int ActiveChunkCount => activeChunkDict.Count;
+    public int PendingChunkCount => requestedChunks.Count - nextRequest;
+    public int GeneratedChunksThisFrame { get; private set; }
+    public bool GenerationPaused => generationPaused;
     [SerializeField]
     private Transform playerPosition;
 
@@ -27,12 +32,22 @@ public class ChunkController : MonoBehaviour
     [Tooltip("Extra rings in which previously generated tiles remain active.")]
     private int chunkRetentionMargin = 1;
 
+    [SerializeField, Min(1)]
+    private int maxChunksPerFrame = 4;
+    [SerializeField, Min(0)]
+    [Tooltip("Soft budget for streaming work. 0 disables the time limit. One chunk cannot be interrupted.")]
+    private float generationBudgetMilliseconds = 2f;
+
     private int lastChunkBufferCount = -1;
     private int lastChunkRetentionMargin = -1;
 
     private Vector2Int currentPlayerChunk;
 
     private bool isUpdating;
+    private bool initialized, generationPaused;
+    private int nextRequest;
+    private int lastGenerationFrame = -1;
+    private System.Comparison<Vector2Int> requestComparison;
 
     private Dictionary<Vector2Int, GameObject> activeChunkDict = new Dictionary<Vector2Int, GameObject>();
     private readonly List<Vector2Int> requestedChunks = new List<Vector2Int>();
@@ -42,6 +57,9 @@ public class ChunkController : MonoBehaviour
     {
         chunkBufferCount = Mathf.Max(0, chunkBufferCount);
         chunkRetentionMargin = Mathf.Max(0, chunkRetentionMargin);
+        maxChunksPerFrame = Mathf.Max(1, maxChunksPerFrame);
+        generationBudgetMilliseconds = float.IsNaN(generationBudgetMilliseconds) || float.IsInfinity(generationBudgetMilliseconds)
+            ? 2f : Mathf.Max(0, generationBudgetMilliseconds);
     }
 
     private void Start()
@@ -58,11 +76,14 @@ public class ChunkController : MonoBehaviour
             return;
         }
         currentPlayerChunk = GetChunkFromCoord(playerPosition.position);
-        UpdateChunk();
+        requestComparison = CompareRequests;
+        initialized = true;
+        UpdateChunk(true);
     }
 
     private void Update()
     {
+        if (!initialized) return;
         if (playerPosition == null || poolManager == null || terrainGenerator == null)
         {
             Debug.LogError("A terrain streaming dependency was destroyed. Streaming has been disabled.", this);
@@ -71,13 +92,12 @@ public class ChunkController : MonoBehaviour
         }
         Vector2Int currentPositionChunk = GetChunkFromCoord(playerPosition.position);
 
-        if (currentPlayerChunk != currentPositionChunk ||
+        bool refresh = currentPlayerChunk != currentPositionChunk ||
             lastChunkBufferCount != chunkBufferCount ||
-            lastChunkRetentionMargin != chunkRetentionMargin)
-        {
-            currentPlayerChunk = currentPositionChunk;
-            UpdateChunk();
-        }
+            lastChunkRetentionMargin != chunkRetentionMargin;
+        currentPlayerChunk = currentPositionChunk;
+        if (lastGenerationFrame != Time.frameCount) GeneratedChunksThisFrame = 0;
+        if (refresh || (PendingChunkCount > 0 && !generationPaused)) UpdateChunk(refresh);
     }
     private Vector2Int GetChunkFromCoord(Vector3 position)
     {
@@ -87,34 +107,47 @@ public class ChunkController : MonoBehaviour
         return chunk;
     }
 
-    private void UpdateChunk()
+    private void UpdateChunk(bool refresh)
     {
         if (isUpdating) return;
         using var streamingScope = StreamingMarker.Auto();
         isUpdating = true;
+        long started = Stopwatch.GetTimestamp();
         try
         {
-            RemoveFarChunks();
-            List<Vector2Int> activeChunkList = GenerateChunkList();
-            foreach (Vector2Int chunk in activeChunkList)
+            if (refresh)
             {
-                if (!activeChunkDict.ContainsKey(chunk))
+                RemoveFarChunks();
+                GenerateChunkList();
+                generationPaused = false;
+            }
+            if (generationPaused || lastGenerationFrame == Time.frameCount) return;
+            lastGenerationFrame = Time.frameCount;
+            GeneratedChunksThisFrame = 0;
+            using var queueScope = GenerationQueueMarker.Auto();
+            while (PendingChunkCount > 0 && GeneratedChunksThisFrame < Mathf.Max(1, maxChunksPerFrame))
+            {
+                Vector2Int chunk = requestedChunks[nextRequest];
+                var poolObject = poolManager.GetChunkFromPool();
+                try
                 {
-                    var poolObject = poolManager.GetChunkFromPool();
-                    try
-                    {
-                        SetTerrainProperty(poolObject, chunk);
-                    }
-                    catch
-                    {
-                        poolManager.SetPool(poolObject);
-                        throw;
-                    }
+                    SetTerrainProperty(poolObject, chunk);
                 }
+                catch
+                {
+                    poolManager.SetPool(poolObject);
+                    throw;
+                }
+                nextRequest++;
+                GeneratedChunksThisFrame++;
+                double elapsedMs = (Stopwatch.GetTimestamp() - started) * 1000.0 / Stopwatch.Frequency;
+                if (generationBudgetMilliseconds > 0 && elapsedMs >= generationBudgetMilliseconds) break;
             }
         }
         catch (System.Exception exception)
         {
+            // Keep the failed request queued; retry only after a neighborhood/configuration change.
+            generationPaused = true;
             Debug.LogException(exception, this);
         }
         finally
@@ -159,10 +192,11 @@ public class ChunkController : MonoBehaviour
         }
     }
 
-    private List<Vector2Int> GenerateChunkList()
+    private void GenerateChunkList()
     {
         using var selectionScope = SelectionMarker.Auto();
         requestedChunks.Clear();
+        nextRequest = 0;
 
         Vector2Int chunk;
         for (int x = currentPlayerChunk.x - chunkBufferCount; x <= currentPlayerChunk.x + chunkBufferCount; x++)
@@ -170,10 +204,21 @@ public class ChunkController : MonoBehaviour
             for (int y = currentPlayerChunk.y - chunkBufferCount; y <= currentPlayerChunk.y + chunkBufferCount; y++)
             {
                 chunk = new Vector2Int(x, y);
-                requestedChunks.Add(chunk);
+                if (!activeChunkDict.ContainsKey(chunk)) requestedChunks.Add(chunk);
             }
         }
 
-        return requestedChunks;
+        requestedChunks.Sort(requestComparison);
+    }
+
+    private int CompareRequests(Vector2Int a, Vector2Int b)
+    {
+        Vector2Int da = a - currentPlayerChunk, db = b - currentPlayerChunk;
+        long distanceA = (long)da.x * da.x + (long)da.y * da.y;
+        long distanceB = (long)db.x * db.x + (long)db.y * db.y;
+        int comparison = distanceA.CompareTo(distanceB);
+        if (comparison != 0) return comparison;
+        comparison = a.x.CompareTo(b.x);
+        return comparison != 0 ? comparison : a.y.CompareTo(b.y);
     }
 }
