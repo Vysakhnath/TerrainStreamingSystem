@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class ChunkController : MonoBehaviour
@@ -16,7 +14,6 @@ public class ChunkController : MonoBehaviour
     private float chunkSize = 20;
     private int chunkBufferCount = 0;
     private int chunkDisableOffset = 4;
-    private int halfChunk;
 
     private Vector2Int currentPlayerChunk;
 
@@ -26,13 +23,29 @@ public class ChunkController : MonoBehaviour
 
     private void Start()
     {
-        halfChunk =(int) chunkSize / 2;
+        if (playerPosition == null || poolManager == null || terrainGenerator == null)
+        {
+            Debug.LogError("Assign the tracked transform, chunk pool, and terrain generator before starting terrain streaming.", this);
+            enabled = false;
+            return;
+        }
+        if (!poolManager.ValidateConfiguration() || !terrainGenerator.Initialize())
+        {
+            enabled = false;
+            return;
+        }
         currentPlayerChunk = GetChunkFromCoord(playerPosition.position);
         UpdateChunk();
     }
 
     private void Update()
     {
+        if (playerPosition == null || poolManager == null || terrainGenerator == null)
+        {
+            Debug.LogError("A terrain streaming dependency was destroyed. Streaming has been disabled.", this);
+            enabled = false;
+            return;
+        }
         Vector2Int currentPositionChunk = GetChunkFromCoord(playerPosition.position);
 
         if (currentPlayerChunk != currentPositionChunk) 
@@ -43,18 +56,6 @@ public class ChunkController : MonoBehaviour
     }
     private Vector2Int GetChunkFromCoord(Vector3 position)
     {
-        /*var absX = Mathf.Abs(position.x) - halfChunk;
-        int posX = (int)(absX/chunkSize);
-        if (absX > 0)
-            posX += 1;
-        posX *= (int)Mathf.Sign(position.x);
-
-        var absY = Mathf.Abs(position.z) - halfChunk;
-        int posY = (int)((absY / chunkSize));
-        if (absY > 0)
-            posY += 1;
-        posY *=(int) Mathf.Sign(position.z);*/
-
         int posX = Mathf.FloorToInt(position.x / chunkSize);
         int posY = Mathf.FloorToInt(position.z / chunkSize);
         Vector2Int chunk = new Vector2Int(posX, posY);
@@ -63,36 +64,37 @@ public class ChunkController : MonoBehaviour
 
     private void UpdateChunk()
     {
-        //TODO: optimise the code
         if (isUpdating) return;
         isUpdating = true;
-        if (activeChunkDict.Count == 0)
+        try
         {
             List<Vector2Int> activeChunkList = GenerateChunkList();
-
-            foreach(Vector2Int chunk in activeChunkList)
-            {
-                var poolObject = poolManager.GetChunkFromPool();
-
-                SetTerrainProperty(poolObject, chunk);
-            }
-        }
-        else
-        {
-            List<Vector2Int> activeChunkList = GenerateChunkList();
-
             foreach (Vector2Int chunk in activeChunkList)
             {
-                if (!activeChunkDict.Keys.Contains(chunk))
+                if (!activeChunkDict.ContainsKey(chunk))
                 {
                     var poolObject = poolManager.GetChunkFromPool();
-
-                    SetTerrainProperty(poolObject, chunk);
+                    try
+                    {
+                        SetTerrainProperty(poolObject, chunk);
+                    }
+                    catch
+                    {
+                        poolManager.SetPool(poolObject);
+                        throw;
+                    }
                 }
             }
             RemoveFarChunks();
         }
-        isUpdating = false;
+        catch (System.Exception exception)
+        {
+            Debug.LogException(exception, this);
+        }
+        finally
+        {
+            isUpdating = false;
+        }
     }
 
     private void SetTerrainProperty((Vector2Int, GameObject) poolObject, Vector2Int chunk)
@@ -100,7 +102,7 @@ public class ChunkController : MonoBehaviour
         poolObject.Item1 = chunk;
         poolObject.Item2.name = "GameObject at "+ chunk.ToString();
         poolObject.Item2.transform.SetParent(transform);
-        //poolObject.Item2.transform.localScale = new Vector3(2, 2, 2);
+
         terrainGenerator.GenerateMeshData(chunk, chunkSize, poolObject.Item2);
         poolObject.Item2.transform.position = new Vector3(chunk.x * chunkSize, 0, chunk.y * chunkSize);
         poolObject.Item2.SetActive(true);
@@ -114,13 +116,13 @@ public class ChunkController : MonoBehaviour
         {
             if (Vector2Int.Distance(chunk, currentPlayerChunk) >= chunkDisableOffset)
             {
-                poolManager.SetPool((chunk, activeChunkDict[chunk]));
                 itemsToRemove.Add(chunk);
             }
         }
 
         foreach(Vector2Int chunk in itemsToRemove)
         {
+            poolManager.SetPool((chunk, activeChunkDict[chunk]));
             activeChunkDict.Remove(chunk);
         }
     }

@@ -8,16 +8,29 @@ public class TerrainGenerator : MonoBehaviour
 
     private PerlinNoiseHeightProvider perlinNoiseHeightProvider;
 
-    private void Start()
+    public bool Initialize()
     {
         perlinNoiseHeightProvider = PerlinNoiseHeightProvider.GetInstance();
+        if (perlinNoiseHeightProvider == null)
+        {
+            Debug.LogError("Terrain generation requires a scene height provider.", this);
+            return false;
+        }
+        return true;
     }
     public void GenerateMeshData(Vector2Int chunkCoord, float chunkSize, GameObject terrain)
     {
+        if (perlinNoiseHeightProvider == null)
+            throw new System.InvalidOperationException("Initialize the terrain generator before generating chunks.");
+        if (resolution <= 0 || chunkSize <= 0 || float.IsNaN(chunkSize) || float.IsInfinity(chunkSize))
+            throw new System.ArgumentOutOfRangeException(nameof(chunkSize), "Chunk size and mesh resolution must be positive and finite.");
+        if (terrain == null || !terrain.TryGetComponent<MeshFilter>(out var terrainMeshFilter) || terrainMeshFilter.sharedMesh == null)
+            throw new System.ArgumentException("Terrain requires a MeshFilter with an owned mesh.", nameof(terrain));
+
         Vector3[] vertices = new Vector3[(resolution + 1) * (resolution + 1)];
         int[] triangle = new int[resolution * resolution * 6];
 
-        int stepOffset = (int) chunkSize / resolution;
+        float stepOffset = chunkSize / resolution;
         int vertexIndex = 0;
         for (int z = 0; z <= resolution; z++)
         {
@@ -49,8 +62,7 @@ public class TerrainGenerator : MonoBehaviour
             }
         }
 
-        var terrainMeshFilter =  terrain.GetComponent<MeshFilter>();
-        var terrainMesh = terrainMeshFilter.mesh;
+        var terrainMesh = terrainMeshFilter.sharedMesh;
 
         terrainMesh.SetVertices(vertices);
         terrainMesh.triangles = triangle;

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PerlinNoiseHeightProvider : MonoBehaviour
@@ -8,12 +7,18 @@ public class PerlinNoiseHeightProvider : MonoBehaviour
     private float scale = 0.05f;
     private void Awake()
     {
-        if (instance != null)
+        if (instance != null && instance != this)
         {
-            Destroy(instance);
+            Debug.LogWarning("Only one terrain height provider is supported per scene.", this);
+            Destroy(this);
+            return;
         }
         instance = this;
-        DontDestroyOnLoad(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this) instance = null;
     }
 
     public static PerlinNoiseHeightProvider GetInstance()
