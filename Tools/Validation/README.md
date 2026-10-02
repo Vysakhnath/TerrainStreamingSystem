@@ -12,6 +12,8 @@ The runner copies Assets, Packages, and ProjectSettings into a unique ignored Te
 
 Checks cover startup, unchanged mesh topology and border heights, negative coordinates, diagonal movement, teleports, generation failure/recovery, pool reset and mesh cleanup, duplicate returns, scene reload, stationary configuration changes, buffer radii 0/1/2/3, and 24 movement/teleport steps with object-count bounds.
 
+Camera checks cover an unscaled Drone root, preserved visual/collider dimensions, the elevated starting pose, and the camera's inherited translation offset. MainScene starts the Drone at Y=35, with its camera at local (0, 8, -12), pitched downward 60 degrees. Drone Visual holds the original nonuniform scale; changing that child scale does not change the camera rig. This is a fixed starting pose, not terrain collision avoidance or automatic altitude control.
+
 Mesh-buffer reuse checks also cover regenerated vertex positions, topology changes on an existing mesh, restored indices/winding, and independence of already published meshes after scratch-buffer overwrite. For allocation and timing comparisons, run with `-Benchmark`; see [profiling instructions](../Profiling/README.md).
 
 ## Neighborhood settings

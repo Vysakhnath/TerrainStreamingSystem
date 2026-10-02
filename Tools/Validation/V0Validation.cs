@@ -165,6 +165,16 @@ public static class V0Validation
                     generator = UnityEngine.Object.FindFirstObjectByType<TerrainGenerator>();
                     drone = GameObject.Find("Drone").transform;
                     if (controller.PendingChunkCount > 0) return;
+                    var camera = Camera.main;
+                    var visual = drone.Find("Drone Visual");
+                    Check(camera != null && camera.transform.parent == drone && drone.localScale == Vector3.one && camera.transform.localScale == Vector3.one, "Camera follows an unscaled Drone root");
+                    Check(visual != null && visual.GetComponent<MeshRenderer>() != null && visual.GetComponent<BoxCollider>() != null && Vector3.Distance(visual.localScale, new Vector3(0.6082f, 0.16495962f, 0.49368f)) < 0.00001f, "Visual and collider preserve original Drone dimensions");
+                    Check(Mathf.Approximately(drone.position.y, 35f) && Mathf.Approximately(camera.transform.position.y, 43f) && camera.transform.forward.y < -0.8f, "Starting Drone and camera are above terrain and look downward");
+                    var cameraOffset = camera.transform.position - drone.position;
+                    var startPosition = drone.position;
+                    drone.position += new Vector3(3f, 2f, -4f);
+                    Check(Vector3.Distance(camera.transform.position - drone.position, cameraOffset) < 0.00001f, "Camera preserves its world offset when Drone translates");
+                    drone.position = startPosition;
                     var overlay = UnityEngine.Object.FindFirstObjectByType<StreamingDebugOverlay>();
                     Check(overlay != null && (ChunkController)Get(overlay, "controller") == controller && (ChunksPoolManager)Get(overlay, "pool") == pool, "Scene diagnostics reference the live controller and pool");
                     Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
