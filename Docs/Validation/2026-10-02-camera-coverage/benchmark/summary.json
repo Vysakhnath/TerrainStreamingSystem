@@ -1,0 +1,3645 @@
+{
+    "timestampUtc": "2026-10-02T17:59:41.2800066Z",
+    "unityVersion": "6000.3.12f1",
+    "operatingSystem": "Windows 11  (10.0.26200)",
+    "processor": "11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz",
+    "graphicsDevice": "Null Device",
+    "sourceRevision": "1e6bfd6-radius5-dirty",
+    "mode": "Null",
+    "methodology": "Windows standalone development player; no Deep Profiling. Controller auto-Update disabled; cached delegates invoke its original Start/Update once per sampled frame. GC Allocated In Frame uses Unity ProfilerRecorder for completed sampled frames across all threads, including engine/harness allocations; measurement arrays are preallocated before a settling frame. Frame intervals include pacing/engine work. Profiler marker samples sum calls per frame; nested times are inclusive. CSV writes and summaries occur after measurement. Memory includes engine and preallocated harness/recorder buffers. Headless mode does not measure rendering/GPU costs.",
+    "processorCount": 8,
+    "systemMemoryMB": 7975,
+    "targetFrameRate": 60,
+    "profilerEnabled": true,
+    "scenarios": [
+        {
+            "name": "startup",
+            "buffer": 2,
+            "frames": 1,
+            "activeMax": 25,
+            "pooledMax": 0,
+            "ownedStart": 0,
+            "ownedEnd": 25,
+            "ownedMax": 25,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.0149998,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 17868,
+            "unityUsedStart": 81307767,
+            "unityUsedEnd": 81477037,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1032192,
+            "monoUsedEnd": 1044480,
+            "streamingMilliseconds": {
+                "samples": 1,
+                "mean": 7.1576,
+                "p50": 7.1576,
+                "p95": 7.1576,
+                "p99": 7.1576,
+                "max": 7.1576
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 0,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 1,
+                "mean": 17868.0,
+                "p50": 17868.0,
+                "p95": 17868.0,
+                "p99": 17868.0,
+                "max": 17868.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 1,
+                    "totalMilliseconds": 7.096,
+                    "meanMillisecondsPerCall": 7.096,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 7.096,
+                        "p50": 7.096,
+                        "p95": 7.096,
+                        "p99": 7.096,
+                        "max": 7.096
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 2.6146,
+                    "meanMillisecondsPerCall": 2.6146,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 2.6146,
+                        "p50": 2.6146,
+                        "p95": 2.6146,
+                        "p99": 2.6146,
+                        "max": 2.6146
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.012199999999999999,
+                    "meanMillisecondsPerCall": 0.012199999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.012199999999999999,
+                        "p50": 0.012199999999999999,
+                        "p95": 0.012199999999999999,
+                        "p99": 0.012199999999999999,
+                        "max": 0.012199999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 25,
+                    "totalMilliseconds": 2.1245,
+                    "meanMillisecondsPerCall": 0.08498,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 2.1245,
+                        "p50": 2.1245,
+                        "p95": 2.1245,
+                        "p99": 2.1245,
+                        "max": 2.1245
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 25,
+                    "totalMilliseconds": 0.9234,
+                    "meanMillisecondsPerCall": 0.036936,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.9234,
+                        "p50": 0.9234,
+                        "p95": 0.9234,
+                        "p99": 0.9234,
+                        "max": 0.9234
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 25,
+                    "totalMilliseconds": 0.5956,
+                    "meanMillisecondsPerCall": 0.023824,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.5956,
+                        "p50": 0.5956,
+                        "p95": 0.5956,
+                        "p99": 0.5956,
+                        "max": 0.5956
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 25,
+                    "totalMilliseconds": 0.2986,
+                    "meanMillisecondsPerCall": 0.011944,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.2986,
+                        "p50": 0.2986,
+                        "p95": 0.2986,
+                        "p99": 0.2986,
+                        "max": 0.2986
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 25,
+                    "totalMilliseconds": 0.1462,
+                    "meanMillisecondsPerCall": 0.005848,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.1462,
+                        "p50": 0.1462,
+                        "p95": 0.1462,
+                        "p99": 0.1462,
+                        "max": 0.1462
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 25,
+                    "totalMilliseconds": 0.0311,
+                    "meanMillisecondsPerCall": 0.0012439999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0311,
+                        "p50": 0.0311,
+                        "p95": 0.0311,
+                        "p99": 0.0311,
+                        "max": 0.0311
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 1,
+                    "totalMilliseconds": 4.4283,
+                    "meanMillisecondsPerCall": 4.4283,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 4.4283,
+                        "p50": 4.4283,
+                        "p95": 4.4283,
+                        "p99": 4.4283,
+                        "max": 4.4283
+                    }
+                }
+            ]
+        },
+        {
+            "name": "continuous",
+            "buffer": 2,
+            "frames": 240,
+            "activeMax": 34,
+            "pooledMax": 4,
+            "ownedStart": 25,
+            "ownedEnd": 34,
+            "ownedMax": 34,
+            "gcCollections": 1,
+            "elapsedSeconds": 4.0059945,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 192900,
+            "unityUsedStart": 81562252,
+            "unityUsedEnd": 81645661,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1077248,
+            "monoUsedEnd": 1187840,
+            "streamingMilliseconds": {
+                "samples": 240,
+                "mean": 0.5072174999999999,
+                "p50": 0.45439999999999999,
+                "p95": 1.0093999999999999,
+                "p99": 1.3897,
+                "max": 1.7942
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 239,
+                "mean": 16.691637656903759,
+                "p50": 16.6743,
+                "p95": 17.5431,
+                "p99": 18.639699999999999,
+                "max": 18.8039
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 240,
+                "mean": 803.75,
+                "p50": 786.0,
+                "p95": 792.0,
+                "p99": 1440.0,
+                "max": 1836.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 240,
+                    "totalMilliseconds": 120.46440000000004,
+                    "meanMillisecondsPerCall": 0.5019350000000001,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.501935,
+                        "p50": 0.4472,
+                        "p95": 1.0019,
+                        "p99": 1.3617,
+                        "max": 1.748
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 240,
+                    "totalMilliseconds": 1.215200000000001,
+                    "meanMillisecondsPerCall": 0.005063333333333337,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.005063333333333336,
+                        "p50": 0.0045,
+                        "p95": 0.0096,
+                        "p99": 0.0219,
+                        "max": 0.0263
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 240,
+                    "totalMilliseconds": 20.161300000000005,
+                    "meanMillisecondsPerCall": 0.08400541666666668,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.08400541666666667,
+                        "p50": 0.0747,
+                        "p95": 0.1359,
+                        "p99": 0.408,
+                        "max": 0.6084999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 1228,
+                    "totalMilliseconds": 1.5303000000000009,
+                    "meanMillisecondsPerCall": 0.0012461726384364828,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.006376249999999998,
+                        "p50": 0.0042,
+                        "p95": 0.012,
+                        "p99": 0.0921,
+                        "max": 0.2551
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 1228,
+                    "totalMilliseconds": 69.614,
+                    "meanMillisecondsPerCall": 0.05668892508143323,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.29005833333333339,
+                        "p50": 0.2316,
+                        "p95": 0.5427,
+                        "p99": 0.7261,
+                        "max": 0.8884
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 1228,
+                    "totalMilliseconds": 51.827200000000029,
+                    "meanMillisecondsPerCall": 0.04220456026058634,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.21594666666666668,
+                        "p50": 0.16499999999999999,
+                        "p95": 0.3962,
+                        "p99": 0.5928,
+                        "max": 0.704
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 1228,
+                    "totalMilliseconds": 15.190100000000001,
+                    "meanMillisecondsPerCall": 0.012369788273615637,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.0632920833333333,
+                        "p50": 0.0601,
+                        "p95": 0.12969999999999999,
+                        "p99": 0.1842,
+                        "max": 0.22499999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 1228,
+                    "totalMilliseconds": 13.149700000000009,
+                    "meanMillisecondsPerCall": 0.010708224755700333,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.05479041666666669,
+                        "p50": 0.040999999999999998,
+                        "p95": 0.1035,
+                        "p99": 0.1502,
+                        "max": 0.1825
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 1228,
+                    "totalMilliseconds": 2.8276000000000005,
+                    "meanMillisecondsPerCall": 0.0023026058631921829,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.011781666666666665,
+                        "p50": 0.0089,
+                        "p95": 0.022699999999999999,
+                        "p99": 0.0305,
+                        "max": 0.0399
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 240,
+                    "totalMilliseconds": 98.39450000000007,
+                    "meanMillisecondsPerCall": 0.4099770833333336,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.40997708333333368,
+                        "p50": 0.37379999999999999,
+                        "p95": 0.8121999999999999,
+                        "p99": 1.0056,
+                        "max": 1.1924
+                    }
+                }
+            ]
+        },
+        {
+            "name": "teleport",
+            "buffer": 2,
+            "frames": 24,
+            "activeMax": 25,
+            "pooledMax": 9,
+            "ownedStart": 34,
+            "ownedEnd": 34,
+            "ownedMax": 34,
+            "gcCollections": 1,
+            "elapsedSeconds": 0.4004449,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 110594,
+            "unityUsedStart": 81568633,
+            "unityUsedEnd": 81572737,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1187840,
+            "monoUsedEnd": 1146880,
+            "streamingMilliseconds": {
+                "samples": 24,
+                "mean": 2.173195833333334,
+                "p50": 2.4302,
+                "p95": 3.3554,
+                "p99": 4.361000000000001,
+                "max": 4.361000000000001
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 23,
+                "mean": 16.717317391304346,
+                "p50": 16.6414,
+                "p95": 17.311799999999999,
+                "p99": 17.404300000000004,
+                "max": 17.404300000000004
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 24,
+                "mean": 4608.083333333333,
+                "p50": 4500.0,
+                "p95": 4650.0,
+                "p99": 6194.0,
+                "max": 6194.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 24,
+                    "totalMilliseconds": 52.0633,
+                    "meanMillisecondsPerCall": 2.1693041666666668,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 2.1693041666666668,
+                        "p50": 2.4259,
+                        "p95": 3.3489,
+                        "p99": 4.3563,
+                        "max": 4.3563
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 0.30670000000000005,
+                    "meanMillisecondsPerCall": 0.012779166666666668,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.012779166666666663,
+                        "p50": 0.014799999999999999,
+                        "p95": 0.0172,
+                        "p99": 0.0219,
+                        "max": 0.0219
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 4.3078,
+                    "meanMillisecondsPerCall": 0.1794916666666667,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.17949166666666664,
+                        "p50": 0.1973,
+                        "p95": 0.2915,
+                        "p99": 0.35459999999999999,
+                        "max": 0.35459999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 600,
+                    "totalMilliseconds": 0.3987,
+                    "meanMillisecondsPerCall": 0.0006645,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.016612500000000003,
+                        "p50": 0.016,
+                        "p95": 0.030199999999999999,
+                        "p99": 0.0356,
+                        "max": 0.0356
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 600,
+                    "totalMilliseconds": 38.0058,
+                    "meanMillisecondsPerCall": 0.063343,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 1.583575,
+                        "p50": 1.8177999999999999,
+                        "p95": 2.2187,
+                        "p99": 3.4783,
+                        "max": 3.4783
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 600,
+                    "totalMilliseconds": 30.3298,
+                    "meanMillisecondsPerCall": 0.050549666666666669,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 1.2637416666666666,
+                        "p50": 1.5021,
+                        "p95": 1.7431999999999999,
+                        "p99": 2.3084,
+                        "max": 2.3084
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 600,
+                    "totalMilliseconds": 6.659599999999999,
+                    "meanMillisecondsPerCall": 0.011099333333333333,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.27748333333333327,
+                        "p50": 0.27449999999999999,
+                        "p95": 0.4095,
+                        "p99": 1.1154,
+                        "max": 1.1154
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 600,
+                    "totalMilliseconds": 7.8739,
+                    "meanMillisecondsPerCall": 0.013123166666666667,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.3280791666666667,
+                        "p50": 0.3669,
+                        "p95": 0.469,
+                        "p99": 0.8156,
+                        "max": 0.8156
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 600,
+                    "totalMilliseconds": 1.4802000000000002,
+                    "meanMillisecondsPerCall": 0.0024670000000000006,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.061675,
+                        "p50": 0.0736,
+                        "p95": 0.0901,
+                        "p99": 0.0993,
+                        "max": 0.0993
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 24,
+                    "totalMilliseconds": 47.38700000000001,
+                    "meanMillisecondsPerCall": 1.9744583333333337,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 1.974458333333333,
+                        "p50": 2.2033,
+                        "p95": 3.0719,
+                        "p99": 4.1187,
+                        "max": 4.1187
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-startup",
+            "buffer": 2,
+            "frames": 7,
+            "activeMax": 25,
+            "pooledMax": 0,
+            "ownedStart": 0,
+            "ownedEnd": 25,
+            "ownedMax": 25,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.1166788,
+            "pendingMax": 21,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 7,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.1004297,
+            "gcAllocatedBytes": 17804,
+            "unityUsedStart": 81514262,
+            "unityUsedEnd": 81683878,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1097728,
+            "monoUsedEnd": 1105920,
+            "streamingMilliseconds": {
+                "samples": 7,
+                "mean": 0.6741714285714285,
+                "p50": 0.5997,
+                "p95": 1.1822,
+                "p99": 1.1822,
+                "max": 1.1822
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 6,
+                "mean": 16.686200000000004,
+                "p50": 16.7197,
+                "p95": 16.7497,
+                "p99": 16.7497,
+                "max": 16.7497
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 7,
+                "mean": 2543.4285714285716,
+                "p50": 1086.0,
+                "p95": 8824.0,
+                "p99": 8824.0,
+                "max": 8824.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 7,
+                    "totalMilliseconds": 4.6716999999999999,
+                    "meanMillisecondsPerCall": 0.6673857142857143,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.6673857142857143,
+                        "p50": 0.5962,
+                        "p95": 1.1758,
+                        "p99": 1.1758,
+                        "max": 1.1758
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0236,
+                    "meanMillisecondsPerCall": 0.0236,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0236,
+                        "p50": 0.0236,
+                        "p95": 0.0236,
+                        "p99": 0.0236,
+                        "max": 0.0236
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.005699999999999999,
+                    "meanMillisecondsPerCall": 0.005699999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.005699999999999999,
+                        "p50": 0.005699999999999999,
+                        "p95": 0.005699999999999999,
+                        "p99": 0.005699999999999999,
+                        "max": 0.005699999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 25,
+                    "totalMilliseconds": 2.0037,
+                    "meanMillisecondsPerCall": 0.080148,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.28624285714285715,
+                        "p50": 0.2355,
+                        "p95": 0.5752999999999999,
+                        "p99": 0.5752999999999999,
+                        "max": 0.5752999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 25,
+                    "totalMilliseconds": 1.9695999999999999,
+                    "meanMillisecondsPerCall": 0.07878399999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.28137142857142857,
+                        "p50": 0.2783,
+                        "p95": 0.4139,
+                        "p99": 0.4139,
+                        "max": 0.4139
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 25,
+                    "totalMilliseconds": 1.4505,
+                    "meanMillisecondsPerCall": 0.058019999999999998,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.2072142857142857,
+                        "p50": 0.2102,
+                        "p95": 0.2867,
+                        "p99": 0.2867,
+                        "max": 0.2867
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 25,
+                    "totalMilliseconds": 0.4673999999999999,
+                    "meanMillisecondsPerCall": 0.018695999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.06677142857142857,
+                        "p50": 0.0619,
+                        "p95": 0.1124,
+                        "p99": 0.1124,
+                        "max": 0.1124
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 25,
+                    "totalMilliseconds": 0.3637,
+                    "meanMillisecondsPerCall": 0.014548,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.05195714285714286,
+                        "p50": 0.053,
+                        "p95": 0.071,
+                        "p99": 0.071,
+                        "max": 0.071
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 25,
+                    "totalMilliseconds": 0.07769999999999999,
+                    "meanMillisecondsPerCall": 0.0031079999999999998,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.011099999999999999,
+                        "p50": 0.011,
+                        "p95": 0.0163,
+                        "p99": 0.0163,
+                        "max": 0.0163
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 7,
+                    "totalMilliseconds": 4.6284,
+                    "meanMillisecondsPerCall": 0.6612,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.6612,
+                        "p50": 0.5949,
+                        "p95": 1.1729,
+                        "p99": 1.1729,
+                        "max": 1.1729
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-teleport",
+            "buffer": 2,
+            "frames": 7,
+            "activeMax": 25,
+            "pooledMax": 21,
+            "ownedStart": 25,
+            "ownedEnd": 25,
+            "ownedMax": 25,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.1165373,
+            "pendingMax": 21,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 7,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.100025,
+            "gcAllocatedBytes": 7702,
+            "unityUsedStart": 81683900,
+            "unityUsedEnd": 81688537,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1150976,
+            "monoUsedEnd": 1159168,
+            "streamingMilliseconds": {
+                "samples": 7,
+                "mean": 0.5107714285714285,
+                "p50": 0.44470000000000006,
+                "p95": 1.1554,
+                "p99": 1.1554,
+                "max": 1.1554
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 6,
+                "mean": 16.638316666666666,
+                "p50": 16.6169,
+                "p95": 16.767500000000003,
+                "p99": 16.767500000000003,
+                "max": 16.767500000000003
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 7,
+                "mean": 1100.2857142857142,
+                "p50": 792.0,
+                "p95": 3544.0,
+                "p99": 3544.0,
+                "max": 3544.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 7,
+                    "totalMilliseconds": 3.5459,
+                    "meanMillisecondsPerCall": 0.5065571428571428,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.5065571428571428,
+                        "p50": 0.44079999999999999,
+                        "p95": 1.1493,
+                        "p99": 1.1493,
+                        "max": 1.1493
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0241,
+                    "meanMillisecondsPerCall": 0.0241,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0241,
+                        "p50": 0.0241,
+                        "p95": 0.0241,
+                        "p99": 0.0241,
+                        "max": 0.0241
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.5586,
+                    "meanMillisecondsPerCall": 0.5586,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.5586,
+                        "p50": 0.5586,
+                        "p95": 0.5586,
+                        "p99": 0.5586,
+                        "max": 0.5586
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 25,
+                    "totalMilliseconds": 0.053899999999999999,
+                    "meanMillisecondsPerCall": 0.002156,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.007699999999999999,
+                        "p50": 0.0081,
+                        "p95": 0.008499999999999999,
+                        "p99": 0.008499999999999999,
+                        "max": 0.008499999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 25,
+                    "totalMilliseconds": 2.0559,
+                    "meanMillisecondsPerCall": 0.08223599999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.2937,
+                        "p50": 0.31029999999999999,
+                        "p95": 0.4024,
+                        "p99": 0.4024,
+                        "max": 0.4024
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 25,
+                    "totalMilliseconds": 1.5986,
+                    "meanMillisecondsPerCall": 0.063944,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.22837142857142854,
+                        "p50": 0.2455,
+                        "p95": 0.30069999999999999,
+                        "p99": 0.30069999999999999,
+                        "max": 0.30069999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 25,
+                    "totalMilliseconds": 0.39549999999999999,
+                    "meanMillisecondsPerCall": 0.015819999999999998,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.0565,
+                        "p50": 0.0564,
+                        "p95": 0.0871,
+                        "p99": 0.0871,
+                        "max": 0.0871
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 25,
+                    "totalMilliseconds": 0.4023,
+                    "meanMillisecondsPerCall": 0.016092,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.05747142857142857,
+                        "p50": 0.0619,
+                        "p95": 0.0751,
+                        "p99": 0.0751,
+                        "max": 0.0751
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 25,
+                    "totalMilliseconds": 0.0865,
+                    "meanMillisecondsPerCall": 0.0034599999999999997,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.012357142857142857,
+                        "p50": 0.012799999999999999,
+                        "p95": 0.0179,
+                        "p99": 0.0179,
+                        "max": 0.0179
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 7,
+                    "totalMilliseconds": 2.9471999999999998,
+                    "meanMillisecondsPerCall": 0.42102857142857139,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 7,
+                        "mean": 0.42102857142857139,
+                        "p50": 0.43929999999999999,
+                        "p95": 0.5603,
+                        "p99": 0.5603,
+                        "max": 0.5603
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-rapid",
+            "buffer": 2,
+            "frames": 30,
+            "activeMax": 25,
+            "pooledMax": 21,
+            "ownedStart": 25,
+            "ownedEnd": 25,
+            "ownedMax": 25,
+            "gcCollections": 1,
+            "elapsedSeconds": 0.5007673,
+            "pendingMax": 21,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 30,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.4842501,
+            "gcAllocatedBytes": 21264,
+            "unityUsedStart": 81688608,
+            "unityUsedEnd": 81688558,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1224704,
+            "monoUsedEnd": 1122304,
+            "streamingMilliseconds": {
+                "samples": 30,
+                "mean": 0.48344333333333336,
+                "p50": 0.5115999999999999,
+                "p95": 0.6438,
+                "p99": 0.9419,
+                "max": 0.9419
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 29,
+                "mean": 16.691675862068967,
+                "p50": 16.6614,
+                "p95": 17.267500000000003,
+                "p99": 17.3296,
+                "max": 17.3296
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 30,
+                "mean": 708.8,
+                "p50": 720.0,
+                "p95": 744.0,
+                "p99": 744.0,
+                "max": 744.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 30,
+                    "totalMilliseconds": 14.380200000000004,
+                    "meanMillisecondsPerCall": 0.47934000000000018,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.47934000000000007,
+                        "p50": 0.5066999999999999,
+                        "p95": 0.6394,
+                        "p99": 0.9364,
+                        "max": 0.9364
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 0.3798,
+                    "meanMillisecondsPerCall": 0.015825000000000003,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.015825000000000003,
+                        "p50": 0.015799999999999999,
+                        "p95": 0.023,
+                        "p99": 0.0487,
+                        "max": 0.0487
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 1.7227999999999997,
+                    "meanMillisecondsPerCall": 0.07178333333333333,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.07178333333333333,
+                        "p50": 0.0633,
+                        "p95": 0.06989999999999999,
+                        "p99": 0.35369999999999998,
+                        "max": 0.35369999999999998
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 117,
+                    "totalMilliseconds": 0.1394,
+                    "meanMillisecondsPerCall": 0.0011914529914529916,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.004646666666666666,
+                        "p50": 0.0040999999999999999,
+                        "p95": 0.009,
+                        "p99": 0.011399999999999999,
+                        "max": 0.011399999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 117,
+                    "totalMilliseconds": 8.994100000000002,
+                    "meanMillisecondsPerCall": 0.07687264957264958,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.29980333333333328,
+                        "p50": 0.3248,
+                        "p95": 0.433,
+                        "p99": 0.4431,
+                        "max": 0.4431
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 117,
+                    "totalMilliseconds": 6.966299999999998,
+                    "meanMillisecondsPerCall": 0.05954102564102562,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.23221,
+                        "p50": 0.248,
+                        "p95": 0.32289999999999999,
+                        "p99": 0.3685,
+                        "max": 0.3685
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 117,
+                    "totalMilliseconds": 1.7744,
+                    "meanMillisecondsPerCall": 0.015165811965811967,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.059146666666666677,
+                        "p50": 0.0596,
+                        "p95": 0.0834,
+                        "p99": 0.1752,
+                        "max": 0.1752
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 117,
+                    "totalMilliseconds": 1.7108999999999997,
+                    "meanMillisecondsPerCall": 0.01462307692307692,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.057029999999999986,
+                        "p50": 0.0628,
+                        "p95": 0.0694,
+                        "p99": 0.0754,
+                        "max": 0.0754
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 117,
+                    "totalMilliseconds": 0.37749999999999997,
+                    "meanMillisecondsPerCall": 0.0032264957264957264,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.012583333333333332,
+                        "p50": 0.013099999999999999,
+                        "p95": 0.0169,
+                        "p99": 0.031,
+                        "max": 0.031
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 30,
+                    "totalMilliseconds": 12.206199999999999,
+                    "meanMillisecondsPerCall": 0.4068733333333333,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 30,
+                        "mean": 0.40687333333333328,
+                        "p50": 0.43579999999999999,
+                        "p95": 0.5556,
+                        "p99": 0.5736,
+                        "max": 0.5736
+                    }
+                }
+            ]
+        },
+        {
+            "name": "startup",
+            "buffer": 3,
+            "frames": 1,
+            "activeMax": 49,
+            "pooledMax": 0,
+            "ownedStart": 0,
+            "ownedEnd": 49,
+            "ownedMax": 49,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.016772,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 29952,
+            "unityUsedStart": 81332368,
+            "unityUsedEnd": 81666670,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1081344,
+            "monoUsedEnd": 1093632,
+            "streamingMilliseconds": {
+                "samples": 1,
+                "mean": 5.4959,
+                "p50": 5.4959,
+                "p95": 5.4959,
+                "p99": 5.4959,
+                "max": 5.4959
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 0,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 1,
+                "mean": 29952.0,
+                "p50": 29952.0,
+                "p95": 29952.0,
+                "p99": 29952.0,
+                "max": 29952.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 1,
+                    "totalMilliseconds": 5.4802,
+                    "meanMillisecondsPerCall": 5.4802,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 5.4802,
+                        "p50": 5.4802,
+                        "p95": 5.4802,
+                        "p99": 5.4802,
+                        "max": 5.4802
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.030699999999999999,
+                    "meanMillisecondsPerCall": 0.030699999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.030699999999999999,
+                        "p50": 0.030699999999999999,
+                        "p95": 0.030699999999999999,
+                        "p99": 0.030699999999999999,
+                        "max": 0.030699999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0059,
+                    "meanMillisecondsPerCall": 0.0059,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0059,
+                        "p50": 0.0059,
+                        "p95": 0.0059,
+                        "p99": 0.0059,
+                        "max": 0.0059
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 49,
+                    "totalMilliseconds": 1.9993999999999999,
+                    "meanMillisecondsPerCall": 0.04080408163265306,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 1.9993999999999999,
+                        "p50": 1.9993999999999999,
+                        "p95": 1.9993999999999999,
+                        "p99": 1.9993999999999999,
+                        "max": 1.9993999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 49,
+                    "totalMilliseconds": 2.6809,
+                    "meanMillisecondsPerCall": 0.05471224489795918,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 2.6809,
+                        "p50": 2.6809,
+                        "p95": 2.6809,
+                        "p99": 2.6809,
+                        "max": 2.6809
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 49,
+                    "totalMilliseconds": 1.9545,
+                    "meanMillisecondsPerCall": 0.03988775510204082,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 1.9545,
+                        "p50": 1.9545,
+                        "p95": 1.9545,
+                        "p99": 1.9545,
+                        "max": 1.9545
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 49,
+                    "totalMilliseconds": 0.6708,
+                    "meanMillisecondsPerCall": 0.013689795918367345,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.6708,
+                        "p50": 0.6708,
+                        "p95": 0.6708,
+                        "p99": 0.6708,
+                        "max": 0.6708
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 49,
+                    "totalMilliseconds": 0.5105999999999999,
+                    "meanMillisecondsPerCall": 0.010420408163265305,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.5105999999999999,
+                        "p50": 0.5105999999999999,
+                        "p95": 0.5105999999999999,
+                        "p99": 0.5105999999999999,
+                        "max": 0.5105999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 49,
+                    "totalMilliseconds": 0.0974,
+                    "meanMillisecondsPerCall": 0.0019877551020408164,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0974,
+                        "p50": 0.0974,
+                        "p95": 0.0974,
+                        "p99": 0.0974,
+                        "max": 0.0974
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 1,
+                    "totalMilliseconds": 5.434,
+                    "meanMillisecondsPerCall": 5.434,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 5.434,
+                        "p50": 5.434,
+                        "p95": 5.434,
+                        "p99": 5.434,
+                        "max": 5.434
+                    }
+                }
+            ]
+        },
+        {
+            "name": "continuous",
+            "buffer": 3,
+            "frames": 240,
+            "activeMax": 62,
+            "pooledMax": 6,
+            "ownedStart": 49,
+            "ownedEnd": 62,
+            "ownedMax": 62,
+            "gcCollections": 2,
+            "elapsedSeconds": 4.0084823,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 270720,
+            "unityUsedStart": 81751773,
+            "unityUsedEnd": 81838067,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1122304,
+            "monoUsedEnd": 1142784,
+            "streamingMilliseconds": {
+                "samples": 240,
+                "mean": 0.9852816666666669,
+                "p50": 0.8943,
+                "p95": 1.4072,
+                "p99": 2.0211,
+                "max": 2.3822
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 239,
+                "mean": 16.701082426778244,
+                "p50": 16.6823,
+                "p95": 18.3142,
+                "p99": 19.063,
+                "max": 19.4516
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 240,
+                "mean": 1128.0,
+                "p50": 1104.0,
+                "p95": 1110.0,
+                "p99": 2082.0,
+                "max": 2682.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 240,
+                    "totalMilliseconds": 235.06460000000008,
+                    "meanMillisecondsPerCall": 0.9794358333333336,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.9794358333333327,
+                        "p50": 0.8896999999999999,
+                        "p95": 1.4022999999999999,
+                        "p99": 1.9767,
+                        "max": 2.3761
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 240,
+                    "totalMilliseconds": 2.6559999999999999,
+                    "meanMillisecondsPerCall": 0.011066666666666666,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.011066666666666669,
+                        "p50": 0.0097,
+                        "p95": 0.013999999999999999,
+                        "p99": 0.0426,
+                        "max": 0.1437
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 240,
+                    "totalMilliseconds": 30.45969999999999,
+                    "meanMillisecondsPerCall": 0.12691541666666665,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.12691541666666665,
+                        "p50": 0.10869999999999999,
+                        "p95": 0.1794,
+                        "p99": 0.3737,
+                        "max": 0.6173
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 1722,
+                    "totalMilliseconds": 3.3790000000000015,
+                    "meanMillisecondsPerCall": 0.001962253193960512,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.014079166666666666,
+                        "p50": 0.0068,
+                        "p95": 0.0179,
+                        "p99": 0.0516,
+                        "max": 0.9734999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 1722,
+                    "totalMilliseconds": 149.64919999999993,
+                    "meanMillisecondsPerCall": 0.08690429732868753,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.6235383333333332,
+                        "p50": 0.5917,
+                        "p95": 0.8745999999999999,
+                        "p99": 1.1928999999999999,
+                        "max": 1.4631999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 1722,
+                    "totalMilliseconds": 116.83060000000005,
+                    "meanMillisecondsPerCall": 0.06784587688734033,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.48679416666666677,
+                        "p50": 0.47,
+                        "p95": 0.6487999999999999,
+                        "p99": 0.9307,
+                        "max": 1.1069
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 1722,
+                    "totalMilliseconds": 28.292200000000013,
+                    "meanMillisecondsPerCall": 0.01642984901277585,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.11788416666666664,
+                        "p50": 0.10339999999999999,
+                        "p95": 0.2147,
+                        "p99": 0.2971,
+                        "max": 0.3569
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 1722,
+                    "totalMilliseconds": 30.237700000000005,
+                    "meanMillisecondsPerCall": 0.017559639953542397,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.12599041666666664,
+                        "p50": 0.1192,
+                        "p95": 0.18969999999999999,
+                        "p99": 0.2996,
+                        "max": 0.482
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 1722,
+                    "totalMilliseconds": 6.372499999999996,
+                    "meanMillisecondsPerCall": 0.0037006387921022048,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.026552083333333356,
+                        "p50": 0.0243,
+                        "p95": 0.0373,
+                        "p99": 0.0564,
+                        "max": 0.18589999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 240,
+                    "totalMilliseconds": 201.01009999999983,
+                    "meanMillisecondsPerCall": 0.8375420833333326,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.8375420833333329,
+                        "p50": 0.7664,
+                        "p95": 1.2431999999999999,
+                        "p99": 1.7965,
+                        "max": 2.1536
+                    }
+                }
+            ]
+        },
+        {
+            "name": "teleport",
+            "buffer": 3,
+            "frames": 24,
+            "activeMax": 49,
+            "pooledMax": 13,
+            "ownedStart": 62,
+            "ownedEnd": 62,
+            "ownedMax": 62,
+            "gcCollections": 2,
+            "elapsedSeconds": 0.4003952,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 217160,
+            "unityUsedStart": 81761071,
+            "unityUsedEnd": 81769039,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1294336,
+            "monoUsedEnd": 1183744,
+            "streamingMilliseconds": {
+                "samples": 24,
+                "mean": 5.5368875,
+                "p50": 5.129,
+                "p95": 6.949999999999999,
+                "p99": 13.4753,
+                "max": 13.4753
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 23,
+                "mean": 16.692417391304347,
+                "p50": 16.7482,
+                "p95": 17.333000000000003,
+                "p99": 17.4875,
+                "max": 17.4875
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 24,
+                "mean": 9048.333333333334,
+                "p50": 8820.0,
+                "p95": 9114.0,
+                "p99": 12536.0,
+                "max": 12536.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 24,
+                    "totalMilliseconds": 132.7636,
+                    "meanMillisecondsPerCall": 5.531816666666667,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 5.531816666666668,
+                        "p50": 5.124,
+                        "p95": 6.9432,
+                        "p99": 13.466899999999999,
+                        "max": 13.466899999999999
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 0.8082999999999999,
+                    "meanMillisecondsPerCall": 0.03367916666666666,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.033679166666666659,
+                        "p50": 0.0313,
+                        "p95": 0.0447,
+                        "p99": 0.0479,
+                        "max": 0.0479
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 10.448099999999999,
+                    "meanMillisecondsPerCall": 0.43533749999999996,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.43533749999999996,
+                        "p50": 0.383,
+                        "p95": 0.6426999999999999,
+                        "p99": 0.9415,
+                        "max": 0.9415
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 1176,
+                    "totalMilliseconds": 1.1018999999999999,
+                    "meanMillisecondsPerCall": 0.0009369897959183673,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.0459125,
+                        "p50": 0.0392,
+                        "p95": 0.0765,
+                        "p99": 0.1252,
+                        "max": 0.1252
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 1176,
+                    "totalMilliseconds": 92.5,
+                    "meanMillisecondsPerCall": 0.07865646258503402,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 3.8541666666666667,
+                        "p50": 3.7773999999999998,
+                        "p95": 4.5703,
+                        "p99": 5.7145,
+                        "max": 5.7145
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 1176,
+                    "totalMilliseconds": 74.78949999999999,
+                    "meanMillisecondsPerCall": 0.06359651360544216,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 3.116229166666667,
+                        "p50": 3.0528,
+                        "p95": 3.5885,
+                        "p99": 4.1358,
+                        "max": 4.1358
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 1176,
+                    "totalMilliseconds": 15.559099999999999,
+                    "meanMillisecondsPerCall": 0.013230527210884353,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.6482958333333332,
+                        "p50": 0.5903999999999999,
+                        "p95": 0.8562,
+                        "p99": 1.3754,
+                        "max": 1.3754
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 1176,
+                    "totalMilliseconds": 19.0158,
+                    "meanMillisecondsPerCall": 0.016169897959183674,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.792325,
+                        "p50": 0.7692,
+                        "p95": 0.9207,
+                        "p99": 1.0213999999999999,
+                        "max": 1.0213999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 1176,
+                    "totalMilliseconds": 4.0681,
+                    "meanMillisecondsPerCall": 0.0034592687074829935,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.16950416666666666,
+                        "p50": 0.1522,
+                        "p95": 0.20609999999999999,
+                        "p99": 0.4743,
+                        "max": 0.4743
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 24,
+                    "totalMilliseconds": 121.39530000000002,
+                    "meanMillisecondsPerCall": 5.058137500000001,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 5.0581375,
+                        "p50": 4.7134,
+                        "p95": 6.2463999999999999,
+                        "p99": 12.465399999999999,
+                        "max": 12.465399999999999
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-startup",
+            "buffer": 3,
+            "frames": 13,
+            "activeMax": 49,
+            "pooledMax": 0,
+            "ownedStart": 0,
+            "ownedEnd": 49,
+            "ownedMax": 49,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.2166664,
+            "pendingMax": 45,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 13,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.2003264,
+            "gcAllocatedBytes": 29952,
+            "unityUsedStart": 81515664,
+            "unityUsedEnd": 81849230,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1138688,
+            "monoUsedEnd": 1150976,
+            "streamingMilliseconds": {
+                "samples": 13,
+                "mean": 0.7013846153846153,
+                "p50": 0.6934,
+                "p95": 1.1078,
+                "p99": 1.1078,
+                "max": 1.1078
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 12,
+                "mean": 16.668566666666668,
+                "p50": 16.660999999999999,
+                "p95": 17.2245,
+                "p99": 17.2245,
+                "max": 17.2245
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 13,
+                "mean": 2304.0,
+                "p50": 1080.0,
+                "p95": 9368.0,
+                "p99": 9368.0,
+                "max": 9368.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 13,
+                    "totalMilliseconds": 9.0419,
+                    "meanMillisecondsPerCall": 0.6955307692307693,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.6955307692307691,
+                        "p50": 0.6889,
+                        "p95": 1.1007,
+                        "p99": 1.1007,
+                        "max": 1.1007
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.022099999999999999,
+                    "meanMillisecondsPerCall": 0.022099999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.022099999999999999,
+                        "p50": 0.022099999999999999,
+                        "p95": 0.022099999999999999,
+                        "p99": 0.022099999999999999,
+                        "max": 0.022099999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0063999999999999998,
+                    "meanMillisecondsPerCall": 0.0063999999999999998,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0063999999999999998,
+                        "p50": 0.0063999999999999998,
+                        "p95": 0.0063999999999999998,
+                        "p99": 0.0063999999999999998,
+                        "max": 0.0063999999999999998
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 49,
+                    "totalMilliseconds": 3.6439,
+                    "meanMillisecondsPerCall": 0.07436530612244898,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.28030000000000007,
+                        "p50": 0.2671,
+                        "p95": 0.4759,
+                        "p99": 0.4759,
+                        "max": 0.4759
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 49,
+                    "totalMilliseconds": 4.0443999999999999,
+                    "meanMillisecondsPerCall": 0.08253877551020407,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.31110769230769227,
+                        "p50": 0.32539999999999999,
+                        "p95": 0.43439999999999998,
+                        "p99": 0.43439999999999998,
+                        "max": 0.43439999999999998
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 49,
+                    "totalMilliseconds": 2.9934000000000005,
+                    "meanMillisecondsPerCall": 0.06108979591836735,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.23026153846153847,
+                        "p50": 0.2465,
+                        "p95": 0.3039,
+                        "p99": 0.3039,
+                        "max": 0.3039
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 49,
+                    "totalMilliseconds": 0.9450999999999999,
+                    "meanMillisecondsPerCall": 0.019287755102040815,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.0727,
+                        "p50": 0.0716,
+                        "p95": 0.12,
+                        "p99": 0.12,
+                        "max": 0.12
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 49,
+                    "totalMilliseconds": 0.7795,
+                    "meanMillisecondsPerCall": 0.01590816326530612,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.05996153846153847,
+                        "p50": 0.062,
+                        "p95": 0.1036,
+                        "p99": 0.1036,
+                        "max": 0.1036
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 49,
+                    "totalMilliseconds": 0.1538,
+                    "meanMillisecondsPerCall": 0.0031387755102040817,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.01183076923076923,
+                        "p50": 0.0129,
+                        "p95": 0.0163,
+                        "p99": 0.0163,
+                        "max": 0.0163
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 13,
+                    "totalMilliseconds": 8.9889,
+                    "meanMillisecondsPerCall": 0.6914538461538461,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.6914538461538461,
+                        "p50": 0.6873,
+                        "p95": 1.0976,
+                        "p99": 1.0976,
+                        "max": 1.0976
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-teleport",
+            "buffer": 3,
+            "frames": 13,
+            "activeMax": 49,
+            "pooledMax": 45,
+            "ownedStart": 49,
+            "ownedEnd": 49,
+            "ownedMax": 49,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.2172342,
+            "pendingMax": 45,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 13,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.2001048,
+            "gcAllocatedBytes": 15386,
+            "unityUsedStart": 81849253,
+            "unityUsedEnd": 81859068,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1208320,
+            "monoUsedEnd": 1216512,
+            "streamingMilliseconds": {
+                "samples": 13,
+                "mean": 0.5516230769230769,
+                "p50": 0.4863,
+                "p95": 1.4374,
+                "p99": 1.4374,
+                "max": 1.4374
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 12,
+                "mean": 16.659916666666665,
+                "p50": 16.6875,
+                "p95": 17.5061,
+                "p99": 17.5061,
+                "max": 17.5061
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 13,
+                "mean": 1183.5384615384614,
+                "p50": 792.0,
+                "p95": 6476.0,
+                "p99": 6476.0,
+                "max": 6476.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 13,
+                    "totalMilliseconds": 7.1088,
+                    "meanMillisecondsPerCall": 0.5468307692307692,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.5468307692307692,
+                        "p50": 0.4819,
+                        "p95": 1.4313,
+                        "p99": 1.4313,
+                        "max": 1.4313
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0477,
+                    "meanMillisecondsPerCall": 0.0477,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0477,
+                        "p50": 0.0477,
+                        "p95": 0.0477,
+                        "p99": 0.0477,
+                        "max": 0.0477
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.7974,
+                    "meanMillisecondsPerCall": 0.7974,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.7974,
+                        "p50": 0.7974,
+                        "p95": 0.7974,
+                        "p99": 0.7974,
+                        "max": 0.7974
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 49,
+                    "totalMilliseconds": 0.1148,
+                    "meanMillisecondsPerCall": 0.002342857142857143,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.008830769230769229,
+                        "p50": 0.0084,
+                        "p95": 0.0143,
+                        "p99": 0.0143,
+                        "max": 0.0143
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 49,
+                    "totalMilliseconds": 4.276,
+                    "meanMillisecondsPerCall": 0.08726530612244898,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.32892307692307695,
+                        "p50": 0.33899999999999999,
+                        "p95": 0.4049,
+                        "p99": 0.4049,
+                        "max": 0.4049
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 49,
+                    "totalMilliseconds": 3.3192999999999999,
+                    "meanMillisecondsPerCall": 0.0677408163265306,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.25533076923076927,
+                        "p50": 0.26789999999999999,
+                        "p95": 0.30369999999999999,
+                        "p99": 0.30369999999999999,
+                        "max": 0.30369999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 49,
+                    "totalMilliseconds": 0.8211999999999999,
+                    "meanMillisecondsPerCall": 0.016759183673469386,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.06316923076923077,
+                        "p50": 0.060899999999999999,
+                        "p95": 0.0899,
+                        "p99": 0.0899,
+                        "max": 0.0899
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 49,
+                    "totalMilliseconds": 0.8285,
+                    "meanMillisecondsPerCall": 0.01690816326530612,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.06373076923076923,
+                        "p50": 0.06749999999999999,
+                        "p95": 0.0779,
+                        "p99": 0.0779,
+                        "max": 0.0779
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 49,
+                    "totalMilliseconds": 0.1793,
+                    "meanMillisecondsPerCall": 0.0036591836734693875,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.01379230769230769,
+                        "p50": 0.013999999999999999,
+                        "p95": 0.0182,
+                        "p99": 0.0182,
+                        "max": 0.0182
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 13,
+                    "totalMilliseconds": 6.237099999999999,
+                    "meanMillisecondsPerCall": 0.479776923076923,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 13,
+                        "mean": 0.47977692307692307,
+                        "p50": 0.4803,
+                        "p95": 0.6502,
+                        "p99": 0.6502,
+                        "max": 0.6502
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-rapid",
+            "buffer": 3,
+            "frames": 36,
+            "activeMax": 49,
+            "pooledMax": 45,
+            "ownedStart": 49,
+            "ownedEnd": 49,
+            "ownedMax": 49,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.6012001,
+            "pendingMax": 45,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 36,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.5842398,
+            "gcAllocatedBytes": 25728,
+            "unityUsedStart": 81859101,
+            "unityUsedEnd": 81859019,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1204224,
+            "monoUsedEnd": 1216512,
+            "streamingMilliseconds": {
+                "samples": 36,
+                "mean": 0.5456305555555556,
+                "p50": 0.5345000000000001,
+                "p95": 0.9297,
+                "p99": 1.0196,
+                "max": 1.0196
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 35,
+                "mean": 16.686794285714293,
+                "p50": 16.6557,
+                "p95": 18.029300000000004,
+                "p99": 18.5699,
+                "max": 18.5699
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 36,
+                "mean": 714.6666666666666,
+                "p50": 744.0,
+                "p95": 744.0,
+                "p99": 744.0,
+                "max": 744.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 36,
+                    "totalMilliseconds": 19.4701,
+                    "meanMillisecondsPerCall": 0.5408361111111111,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.5408361111111111,
+                        "p50": 0.5311,
+                        "p95": 0.9250999999999999,
+                        "p99": 0.9995999999999999,
+                        "max": 0.9995999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 0.7845999999999999,
+                    "meanMillisecondsPerCall": 0.03269166666666666,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.03269166666666667,
+                        "p50": 0.0326,
+                        "p95": 0.0424,
+                        "p99": 0.0455,
+                        "max": 0.0455
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 1.9381000000000004,
+                    "meanMillisecondsPerCall": 0.08075416666666668,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.08075416666666667,
+                        "p50": 0.0639,
+                        "p95": 0.0967,
+                        "p99": 0.42119999999999999,
+                        "max": 0.42119999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 141,
+                    "totalMilliseconds": 0.24600000000000003,
+                    "meanMillisecondsPerCall": 0.00174468085106383,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.006833333333333334,
+                        "p50": 0.0045,
+                        "p95": 0.0156,
+                        "p99": 0.047,
+                        "max": 0.047
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 141,
+                    "totalMilliseconds": 11.9201,
+                    "meanMillisecondsPerCall": 0.08453971631205673,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.33111388888888895,
+                        "p50": 0.3347,
+                        "p95": 0.4657,
+                        "p99": 0.5804,
+                        "max": 0.5804
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 141,
+                    "totalMilliseconds": 9.2075,
+                    "meanMillisecondsPerCall": 0.0653014184397163,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.2557638888888889,
+                        "p50": 0.2656,
+                        "p95": 0.3349,
+                        "p99": 0.3917,
+                        "max": 0.3917
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 141,
+                    "totalMilliseconds": 2.3463000000000004,
+                    "meanMillisecondsPerCall": 0.016640425531914896,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.06517500000000001,
+                        "p50": 0.0598,
+                        "p95": 0.09029999999999999,
+                        "p99": 0.2256,
+                        "max": 0.2256
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 141,
+                    "totalMilliseconds": 2.318,
+                    "meanMillisecondsPerCall": 0.016439716312056739,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.06438888888888887,
+                        "p50": 0.0672,
+                        "p95": 0.0873,
+                        "p99": 0.0933,
+                        "max": 0.0933
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 141,
+                    "totalMilliseconds": 0.48910000000000006,
+                    "meanMillisecondsPerCall": 0.003468794326241135,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.013586111111111113,
+                        "p50": 0.0138,
+                        "p95": 0.017599999999999999,
+                        "p99": 0.0242,
+                        "max": 0.0242
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 36,
+                    "totalMilliseconds": 16.622899999999999,
+                    "meanMillisecondsPerCall": 0.46174722222222217,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 36,
+                        "mean": 0.46174722222222217,
+                        "p50": 0.4381,
+                        "p95": 0.6424,
+                        "p99": 0.9912,
+                        "max": 0.9912
+                    }
+                }
+            ]
+        },
+        {
+            "name": "startup",
+            "buffer": 5,
+            "frames": 1,
+            "activeMax": 121,
+            "pooledMax": 0,
+            "ownedStart": 0,
+            "ownedEnd": 121,
+            "ownedMax": 121,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.0157605,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 61608,
+            "unityUsedStart": 81333297,
+            "unityUsedEnd": 82210587,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1118208,
+            "monoUsedEnd": 1155072,
+            "streamingMilliseconds": {
+                "samples": 1,
+                "mean": 8.5496,
+                "p50": 8.5496,
+                "p95": 8.5496,
+                "p99": 8.5496,
+                "max": 8.5496
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 0,
+                "mean": 0.0,
+                "p50": 0.0,
+                "p95": 0.0,
+                "p99": 0.0,
+                "max": 0.0
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 1,
+                "mean": 61608.0,
+                "p50": 61608.0,
+                "p95": 61608.0,
+                "p99": 61608.0,
+                "max": 61608.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 1,
+                    "totalMilliseconds": 8.5216,
+                    "meanMillisecondsPerCall": 8.5216,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 8.5216,
+                        "p50": 8.5216,
+                        "p95": 8.5216,
+                        "p99": 8.5216,
+                        "max": 8.5216
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0827,
+                    "meanMillisecondsPerCall": 0.0827,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0827,
+                        "p50": 0.0827,
+                        "p95": 0.0827,
+                        "p99": 0.0827,
+                        "max": 0.0827
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0127,
+                    "meanMillisecondsPerCall": 0.0127,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0127,
+                        "p50": 0.0127,
+                        "p95": 0.0127,
+                        "p99": 0.0127,
+                        "max": 0.0127
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 121,
+                    "totalMilliseconds": 2.8207,
+                    "meanMillisecondsPerCall": 0.023311570247933887,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 2.8207,
+                        "p50": 2.8207,
+                        "p95": 2.8207,
+                        "p99": 2.8207,
+                        "max": 2.8207
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 121,
+                    "totalMilliseconds": 4.5073,
+                    "meanMillisecondsPerCall": 0.037250413223140498,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 4.5073,
+                        "p50": 4.5073,
+                        "p95": 4.5073,
+                        "p99": 4.5073,
+                        "max": 4.5073
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 121,
+                    "totalMilliseconds": 3.4093999999999999,
+                    "meanMillisecondsPerCall": 0.02817685950413223,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 3.4093999999999999,
+                        "p50": 3.4093999999999999,
+                        "p95": 3.4093999999999999,
+                        "p99": 3.4093999999999999,
+                        "max": 3.4093999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 121,
+                    "totalMilliseconds": 1.0223,
+                    "meanMillisecondsPerCall": 0.008448760330578512,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 1.0223,
+                        "p50": 1.0223,
+                        "p95": 1.0223,
+                        "p99": 1.0223,
+                        "max": 1.0223
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 121,
+                    "totalMilliseconds": 0.8706999999999999,
+                    "meanMillisecondsPerCall": 0.007195867768595041,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.8706999999999999,
+                        "p50": 0.8706999999999999,
+                        "p95": 0.8706999999999999,
+                        "p99": 0.8706999999999999,
+                        "max": 0.8706999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 121,
+                    "totalMilliseconds": 0.1691,
+                    "meanMillisecondsPerCall": 0.0013975206611570248,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.1691,
+                        "p50": 0.1691,
+                        "p95": 0.1691,
+                        "p99": 0.1691,
+                        "max": 0.1691
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 1,
+                    "totalMilliseconds": 8.4218,
+                    "meanMillisecondsPerCall": 8.4218,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 8.4218,
+                        "p50": 8.4218,
+                        "p95": 8.4218,
+                        "p99": 8.4218,
+                        "max": 8.4218
+                    }
+                }
+            ]
+        },
+        {
+            "name": "continuous",
+            "buffer": 5,
+            "frames": 240,
+            "activeMax": 142,
+            "pooledMax": 10,
+            "ownedStart": 121,
+            "ownedEnd": 142,
+            "ownedMax": 142,
+            "gcCollections": 3,
+            "elapsedSeconds": 4.0137108,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 427756,
+            "unityUsedStart": 82295809,
+            "unityUsedEnd": 82443543,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1191936,
+            "monoUsedEnd": 1220608,
+            "streamingMilliseconds": {
+                "samples": 240,
+                "mean": 1.2588362500000004,
+                "p50": 1.2884,
+                "p95": 2.2165000000000005,
+                "p99": 3.0664,
+                "max": 6.0372
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 239,
+                "mean": 16.73222761506276,
+                "p50": 16.7103,
+                "p95": 18.3384,
+                "p99": 20.0976,
+                "max": 21.6044
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 240,
+                "mean": 1782.3166666666666,
+                "p50": 1740.0,
+                "p95": 1746.0,
+                "p99": 3366.0,
+                "max": 4374.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 240,
+                    "totalMilliseconds": 300.5339999999999,
+                    "meanMillisecondsPerCall": 1.2522249999999995,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 1.2522249999999995,
+                        "p50": 1.2845,
+                        "p95": 2.1995999999999999,
+                        "p99": 3.0572,
+                        "max": 6.0152
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 240,
+                    "totalMilliseconds": 4.189200000000002,
+                    "meanMillisecondsPerCall": 0.01745500000000001,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.01745500000000001,
+                        "p50": 0.0191,
+                        "p95": 0.0282,
+                        "p99": 0.0424,
+                        "max": 0.0612
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 240,
+                    "totalMilliseconds": 40.641200000000008,
+                    "meanMillisecondsPerCall": 0.16933833333333335,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.1693383333333334,
+                        "p50": 0.1512,
+                        "p95": 0.39049999999999998,
+                        "p99": 0.5670999999999999,
+                        "max": 0.9561
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 2710,
+                    "totalMilliseconds": 5.128200000000001,
+                    "meanMillisecondsPerCall": 0.001892324723247233,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.021367499999999995,
+                        "p50": 0.0093,
+                        "p95": 0.0249,
+                        "p99": 0.14179999999999999,
+                        "max": 1.9521
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 2710,
+                    "totalMilliseconds": 184.78680000000007,
+                    "meanMillisecondsPerCall": 0.06818701107011073,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.769945,
+                        "p50": 0.8573,
+                        "p95": 1.222,
+                        "p99": 1.8254,
+                        "max": 2.5189
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 2710,
+                    "totalMilliseconds": 139.93070000000004,
+                    "meanMillisecondsPerCall": 0.051634944649446509,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.5830445833333331,
+                        "p50": 0.6831999999999999,
+                        "p95": 0.9115,
+                        "p99": 1.506,
+                        "max": 1.7312999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 2710,
+                    "totalMilliseconds": 37.97739999999999,
+                    "meanMillisecondsPerCall": 0.014013800738007376,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.15823916666666663,
+                        "p50": 0.1436,
+                        "p95": 0.321,
+                        "p99": 0.49229999999999998,
+                        "max": 0.718
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 2710,
+                    "totalMilliseconds": 35.530199999999997,
+                    "meanMillisecondsPerCall": 0.013110774907749076,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.1480424999999999,
+                        "p50": 0.1731,
+                        "p95": 0.22719999999999999,
+                        "p99": 0.39909999999999998,
+                        "max": 0.9517
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 2710,
+                    "totalMilliseconds": 7.212000000000002,
+                    "meanMillisecondsPerCall": 0.0026612546125461265,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 0.03004999999999998,
+                        "p50": 0.0349,
+                        "p95": 0.047599999999999999,
+                        "p99": 0.06849999999999999,
+                        "max": 0.0881
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 240,
+                    "totalMilliseconds": 254.72060000000014,
+                    "meanMillisecondsPerCall": 1.0613358333333339,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 240,
+                        "mean": 1.0613358333333334,
+                        "p50": 1.1107,
+                        "p95": 1.8357999999999999,
+                        "p99": 2.7062999999999999,
+                        "max": 5.8132
+                    }
+                }
+            ]
+        },
+        {
+            "name": "teleport",
+            "buffer": 5,
+            "frames": 24,
+            "activeMax": 121,
+            "pooledMax": 21,
+            "ownedStart": 142,
+            "ownedEnd": 142,
+            "ownedMax": 142,
+            "gcCollections": 3,
+            "elapsedSeconds": 0.4008258,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 538724,
+            "unityUsedStart": 82366117,
+            "unityUsedEnd": 82383950,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 190164992,
+            "monoUsedStart": 1224704,
+            "monoUsedEnd": 1163264,
+            "streamingMilliseconds": {
+                "samples": 24,
+                "mean": 11.286712500000002,
+                "p50": 10.929,
+                "p95": 14.905899999999999,
+                "p99": 17.2269,
+                "max": 17.2269
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 23,
+                "mean": 16.623834782608694,
+                "p50": 16.723200000000003,
+                "p95": 17.2809,
+                "p99": 17.413700000000003,
+                "max": 17.413700000000003
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 24,
+                "mean": 22446.833333333332,
+                "p50": 21780.0,
+                "p95": 22506.0,
+                "p99": 33428.0,
+                "max": 33428.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 24,
+                    "totalMilliseconds": 270.5403,
+                    "meanMillisecondsPerCall": 11.2725125,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 11.272512499999998,
+                        "p50": 10.9249,
+                        "p95": 14.8971,
+                        "p99": 17.220299999999999,
+                        "max": 17.220299999999999
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 1.9479999999999998,
+                    "meanMillisecondsPerCall": 0.08116666666666665,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.08116666666666665,
+                        "p50": 0.0833,
+                        "p95": 0.11549999999999999,
+                        "p99": 0.1296,
+                        "max": 0.1296
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 24.804399999999999,
+                    "meanMillisecondsPerCall": 1.0335166666666667,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 1.0335166666666669,
+                        "p50": 1.0002,
+                        "p95": 1.6115,
+                        "p99": 1.8287,
+                        "max": 1.8287
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 2904,
+                    "totalMilliseconds": 2.4439,
+                    "meanMillisecondsPerCall": 0.0008415633608815428,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.10182916666666665,
+                        "p50": 0.08689999999999999,
+                        "p95": 0.2001,
+                        "p99": 0.2108,
+                        "max": 0.2108
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 2904,
+                    "totalMilliseconds": 185.2714,
+                    "meanMillisecondsPerCall": 0.0637986914600551,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 7.719641666666665,
+                        "p50": 7.5899,
+                        "p95": 9.9211,
+                        "p99": 10.9628,
+                        "max": 10.9628
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 2904,
+                    "totalMilliseconds": 146.6013,
+                    "meanMillisecondsPerCall": 0.05048254132231405,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 6.1083875,
+                        "p50": 6.2433,
+                        "p95": 8.0865,
+                        "p99": 8.5979,
+                        "max": 8.5979
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 2904,
+                    "totalMilliseconds": 33.4585,
+                    "meanMillisecondsPerCall": 0.011521522038567494,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 1.3941041666666668,
+                        "p50": 1.3425,
+                        "p95": 1.9268999999999999,
+                        "p99": 2.0398,
+                        "max": 2.0398
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 2904,
+                    "totalMilliseconds": 37.1682,
+                    "meanMillisecondsPerCall": 0.01279896694214876,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 1.548675,
+                        "p50": 1.5364,
+                        "p95": 2.0157,
+                        "p99": 2.225,
+                        "max": 2.225
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 2904,
+                    "totalMilliseconds": 7.4157,
+                    "meanMillisecondsPerCall": 0.002553615702479339,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.30898749999999999,
+                        "p50": 0.3115,
+                        "p95": 0.41009999999999999,
+                        "p99": 0.426,
+                        "max": 0.426
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 24,
+                    "totalMilliseconds": 242.9393,
+                    "meanMillisecondsPerCall": 10.122470833333333,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 10.122470833333333,
+                        "p50": 9.743599999999999,
+                        "p95": 13.6115,
+                        "p99": 15.716999999999999,
+                        "max": 15.716999999999999
+                    }
+                }
+            ]
+        },
+        {
+            "name": "soak",
+            "buffer": 5,
+            "frames": 1798,
+            "activeMax": 143,
+            "pooledMax": 22,
+            "ownedStart": 143,
+            "ownedEnd": 143,
+            "ownedMax": 143,
+            "gcCollections": 1,
+            "elapsedSeconds": 30.0157271,
+            "pendingMax": 0,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 1000,
+            "coverageFrames": 0,
+            "budgetMilliseconds": 0.0,
+            "coverageSeconds": 0.0,
+            "gcAllocatedBytes": 299430,
+            "unityUsedStart": 85352372,
+            "unityUsedEnd": 85352858,
+            "unityReservedStart": 190164992,
+            "unityReservedEnd": 192262144,
+            "monoUsedStart": 1576960,
+            "monoUsedEnd": 1679360,
+            "streamingMilliseconds": {
+                "samples": 1798,
+                "mean": 0.12436012235817581,
+                "p50": 0.0039,
+                "p95": 1.2944,
+                "p99": 1.7087999999999999,
+                "max": 13.7678
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 1797,
+                "mean": 16.693959933222044,
+                "p50": 16.6901,
+                "p95": 17.6784,
+                "p99": 18.9344,
+                "max": 21.695800000000003
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 1798,
+                "mean": 166.53503893214683,
+                "p50": 0.0,
+                "p95": 1674.0,
+                "p99": 1782.0,
+                "max": 18084.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 165,
+                    "totalMilliseconds": 215.6437000000001,
+                    "meanMillisecondsPerCall": 1.3069315151515158,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 1.3069315151515156,
+                        "p50": 1.3018999999999999,
+                        "p95": 1.9131,
+                        "p99": 4.0581,
+                        "max": 13.7517
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 165,
+                    "totalMilliseconds": 3.0962,
+                    "meanMillisecondsPerCall": 0.018764848484848486,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.018764848484848503,
+                        "p50": 0.0195,
+                        "p95": 0.026099999999999999,
+                        "p99": 0.0689,
+                        "max": 0.1046
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 165,
+                    "totalMilliseconds": 25.537900000000005,
+                    "meanMillisecondsPerCall": 0.15477515151515154,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.1547751515151515,
+                        "p50": 0.14659999999999999,
+                        "p95": 0.2457,
+                        "p99": 0.3923,
+                        "max": 1.6118
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 1935,
+                    "totalMilliseconds": 1.8388000000000009,
+                    "meanMillisecondsPerCall": 0.0009502842377260986,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.011144242424242423,
+                        "p50": 0.008799999999999999,
+                        "p95": 0.0232,
+                        "p99": 0.0969,
+                        "max": 0.0977
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 1935,
+                    "totalMilliseconds": 143.02190000000003,
+                    "meanMillisecondsPerCall": 0.07391312661498709,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.8667993939393937,
+                        "p50": 0.8918999999999999,
+                        "p95": 1.1947999999999999,
+                        "p99": 2.399,
+                        "max": 9.722999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 1935,
+                    "totalMilliseconds": 113.46610000000004,
+                    "meanMillisecondsPerCall": 0.05863881136950906,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.6876733333333331,
+                        "p50": 0.7259,
+                        "p95": 0.9045,
+                        "p99": 1.7085,
+                        "max": 7.962199999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 1935,
+                    "totalMilliseconds": 25.522500000000016,
+                    "meanMillisecondsPerCall": 0.013189922480620164,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.15468181818181823,
+                        "p50": 0.1454,
+                        "p95": 0.25329999999999999,
+                        "p99": 0.5959,
+                        "max": 1.535
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 1935,
+                    "totalMilliseconds": 28.917899999999994,
+                    "meanMillisecondsPerCall": 0.014944651162790694,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.17525999999999995,
+                        "p50": 0.1833,
+                        "p95": 0.2337,
+                        "p99": 0.44279999999999999,
+                        "max": 2.0141
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 1935,
+                    "totalMilliseconds": 5.804499999999997,
+                    "meanMillisecondsPerCall": 0.002999741602067182,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 0.03517878787878789,
+                        "p50": 0.036,
+                        "p95": 0.046099999999999998,
+                        "p99": 0.1326,
+                        "max": 0.39799999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 165,
+                    "totalMilliseconds": 186.49040000000006,
+                    "meanMillisecondsPerCall": 1.1302448484848489,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 165,
+                        "mean": 1.130244848484849,
+                        "p50": 1.1252,
+                        "p95": 1.5874,
+                        "p99": 3.7769,
+                        "max": 12.0161
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-startup",
+            "buffer": 5,
+            "frames": 31,
+            "activeMax": 121,
+            "pooledMax": 0,
+            "ownedStart": 0,
+            "ownedEnd": 121,
+            "ownedMax": 121,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.5175703,
+            "pendingMax": 117,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 31,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.5012639,
+            "gcAllocatedBytes": 61608,
+            "unityUsedStart": 81579881,
+            "unityUsedEnd": 82401475,
+            "unityReservedStart": 192262144,
+            "unityReservedEnd": 192262144,
+            "monoUsedStart": 1175552,
+            "monoUsedEnd": 1212416,
+            "streamingMilliseconds": {
+                "samples": 31,
+                "mean": 0.846758064516129,
+                "p50": 0.8601000000000001,
+                "p95": 1.2251,
+                "p99": 1.3346,
+                "max": 1.3346
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 30,
+                "mean": 16.698149999999996,
+                "p50": 16.6641,
+                "p95": 17.4291,
+                "p99": 17.6292,
+                "max": 17.6292
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 31,
+                "mean": 1987.3548387096773,
+                "p50": 1080.0,
+                "p95": 10424.0,
+                "p99": 12270.0,
+                "max": 12270.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 31,
+                    "totalMilliseconds": 26.043100000000004,
+                    "meanMillisecondsPerCall": 0.8401000000000001,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.8401000000000001,
+                        "p50": 0.8543,
+                        "p95": 1.2166,
+                        "p99": 1.3276999999999999,
+                        "max": 1.3276999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.06849999999999999,
+                    "meanMillisecondsPerCall": 0.06849999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.06849999999999999,
+                        "p50": 0.06849999999999999,
+                        "p95": 0.06849999999999999,
+                        "p99": 0.06849999999999999,
+                        "max": 0.06849999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0083,
+                    "meanMillisecondsPerCall": 0.0083,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0083,
+                        "p50": 0.0083,
+                        "p95": 0.0083,
+                        "p99": 0.0083,
+                        "max": 0.0083
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 121,
+                    "totalMilliseconds": 10.9981,
+                    "meanMillisecondsPerCall": 0.09089338842975207,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.3547774193548388,
+                        "p50": 0.3525,
+                        "p95": 0.567,
+                        "p99": 0.6363,
+                        "max": 0.6363
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 121,
+                    "totalMilliseconds": 10.997799999999998,
+                    "meanMillisecondsPerCall": 0.09089090909090908,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.3547677419354839,
+                        "p50": 0.3664,
+                        "p95": 0.4697,
+                        "p99": 0.4839,
+                        "max": 0.4839
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 121,
+                    "totalMilliseconds": 7.915199999999999,
+                    "meanMillisecondsPerCall": 0.06541487603305785,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.2553290322580645,
+                        "p50": 0.2724,
+                        "p95": 0.33749999999999999,
+                        "p99": 0.34659999999999999,
+                        "max": 0.34659999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 121,
+                    "totalMilliseconds": 2.7651000000000005,
+                    "meanMillisecondsPerCall": 0.022852066115702484,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.08919677419354838,
+                        "p50": 0.0842,
+                        "p95": 0.12869999999999999,
+                        "p99": 0.1389,
+                        "max": 0.1389
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 121,
+                    "totalMilliseconds": 1.9712,
+                    "meanMillisecondsPerCall": 0.016290909090909093,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.06358709677419354,
+                        "p50": 0.06799999999999999,
+                        "p95": 0.0764,
+                        "p99": 0.08879999999999999,
+                        "max": 0.08879999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 121,
+                    "totalMilliseconds": 0.4244,
+                    "meanMillisecondsPerCall": 0.0035074380165289258,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.01369032258064516,
+                        "p50": 0.014199999999999999,
+                        "p95": 0.0182,
+                        "p99": 0.018699999999999999,
+                        "max": 0.018699999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 31,
+                    "totalMilliseconds": 25.8917,
+                    "meanMillisecondsPerCall": 0.8352161290322581,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.835216129032258,
+                        "p50": 0.8100999999999999,
+                        "p95": 1.2137,
+                        "p99": 1.3237999999999999,
+                        "max": 1.3237999999999999
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-teleport",
+            "buffer": 5,
+            "frames": 31,
+            "activeMax": 121,
+            "pooledMax": 118,
+            "ownedStart": 121,
+            "ownedEnd": 121,
+            "ownedMax": 121,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.5188162,
+            "pendingMax": 118,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 31,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.5026349,
+            "gcAllocatedBytes": 35758,
+            "unityUsedStart": 82401235,
+            "unityUsedEnd": 82421614,
+            "unityReservedStart": 192262144,
+            "unityReservedEnd": 192262144,
+            "monoUsedStart": 1204224,
+            "monoUsedEnd": 1228800,
+            "streamingMilliseconds": {
+                "samples": 31,
+                "mean": 0.5830967741935483,
+                "p50": 0.5057,
+                "p95": 0.7779,
+                "p99": 2.0322999999999999,
+                "max": 2.0322999999999999
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 30,
+                "mean": 16.74349,
+                "p50": 16.6373,
+                "p95": 17.3046,
+                "p99": 17.5544,
+                "max": 17.5544
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 31,
+                "mean": 1153.483870967742,
+                "p50": 792.0,
+                "p95": 792.0,
+                "p99": 12394.0,
+                "max": 12394.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 31,
+                    "totalMilliseconds": 17.9051,
+                    "meanMillisecondsPerCall": 0.577583870967742,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.577583870967742,
+                        "p50": 0.5009,
+                        "p95": 0.7718999999999999,
+                        "p99": 2.0248999999999999,
+                        "max": 2.0248999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 0.0875,
+                    "meanMillisecondsPerCall": 0.0875,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 0.0875,
+                        "p50": 0.0875,
+                        "p95": 0.0875,
+                        "p99": 0.0875,
+                        "max": 0.0875
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 1,
+                    "totalMilliseconds": 1.5680999999999999,
+                    "meanMillisecondsPerCall": 1.5680999999999999,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 1,
+                        "mean": 1.5680999999999999,
+                        "p50": 1.5680999999999999,
+                        "p95": 1.5680999999999999,
+                        "p99": 1.5680999999999999,
+                        "max": 1.5680999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 121,
+                    "totalMilliseconds": 0.3324000000000001,
+                    "meanMillisecondsPerCall": 0.0027471074380165298,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.010722580645161292,
+                        "p50": 0.0103,
+                        "p95": 0.0152,
+                        "p99": 0.0165,
+                        "max": 0.0165
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 121,
+                    "totalMilliseconds": 10.6863,
+                    "meanMillisecondsPerCall": 0.08831652892561982,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.34471935483870966,
+                        "p50": 0.346,
+                        "p95": 0.41619999999999998,
+                        "p99": 0.5547,
+                        "max": 0.5547
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 121,
+                    "totalMilliseconds": 8.170099999999998,
+                    "meanMillisecondsPerCall": 0.06752148760330577,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.2635516129032258,
+                        "p50": 0.26849999999999998,
+                        "p95": 0.3094,
+                        "p99": 0.4455,
+                        "max": 0.4455
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 121,
+                    "totalMilliseconds": 2.1463,
+                    "meanMillisecondsPerCall": 0.01773801652892562,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.06923548387096774,
+                        "p50": 0.064,
+                        "p95": 0.0964,
+                        "p99": 0.0968,
+                        "max": 0.0968
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 121,
+                    "totalMilliseconds": 2.0282999999999995,
+                    "meanMillisecondsPerCall": 0.016762809917355367,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.0654290322580645,
+                        "p50": 0.0672,
+                        "p95": 0.081,
+                        "p99": 0.0851,
+                        "max": 0.0851
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 121,
+                    "totalMilliseconds": 0.4472999999999999,
+                    "meanMillisecondsPerCall": 0.0036966942148760324,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.014429032258064516,
+                        "p50": 0.0141,
+                        "p95": 0.020999999999999999,
+                        "p99": 0.022199999999999999,
+                        "max": 0.022199999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 31,
+                    "totalMilliseconds": 16.1865,
+                    "meanMillisecondsPerCall": 0.5221451612903225,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 31,
+                        "mean": 0.5221451612903225,
+                        "p50": 0.4914,
+                        "p95": 0.7526999999999999,
+                        "p99": 0.7693,
+                        "max": 0.7693
+                    }
+                }
+            ]
+        },
+        {
+            "name": "budget-rapid",
+            "buffer": 5,
+            "frames": 54,
+            "activeMax": 121,
+            "pooledMax": 120,
+            "ownedStart": 121,
+            "ownedEnd": 121,
+            "ownedMax": 121,
+            "gcCollections": 0,
+            "elapsedSeconds": 0.9028269,
+            "pendingMax": 120,
+            "pendingEnd": 0,
+            "maxChunksPerFrame": 4,
+            "coverageFrames": 54,
+            "budgetMilliseconds": 2.0,
+            "coverageSeconds": 0.8857557,
+            "gcAllocatedBytes": 38628,
+            "unityUsedStart": 82421866,
+            "unityUsedEnd": 82421624,
+            "unityReservedStart": 192262144,
+            "unityReservedEnd": 192262144,
+            "monoUsedStart": 1302528,
+            "monoUsedEnd": 1343488,
+            "streamingMilliseconds": {
+                "samples": 54,
+                "mean": 0.6795814814814816,
+                "p50": 0.6141,
+                "p95": 1.2551999999999999,
+                "p99": 2.0661,
+                "max": 2.0661
+            },
+            "frameIntervalMilliseconds": {
+                "samples": 53,
+                "mean": 16.708813207547175,
+                "p50": 16.655900000000004,
+                "p95": 18.3834,
+                "p99": 18.6795,
+                "max": 18.6795
+            },
+            "gcAllocatedBytesPerFrame": {
+                "samples": 54,
+                "mean": 715.3333333333334,
+                "p50": 744.0,
+                "p95": 744.0,
+                "p99": 744.0,
+                "max": 744.0
+            },
+            "markers": [
+                {
+                    "name": "Terrain.StreamingUpdate",
+                    "calls": 54,
+                    "totalMilliseconds": 36.34760000000001,
+                    "meanMillisecondsPerCall": 0.6731037037037039,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.6731037037037039,
+                        "p50": 0.6101,
+                        "p95": 1.2331999999999999,
+                        "p99": 2.0559,
+                        "max": 2.0559
+                    }
+                },
+                {
+                    "name": "Terrain.SelectChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 2.3279,
+                    "meanMillisecondsPerCall": 0.09699583333333334,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.09699583333333332,
+                        "p50": 0.0926,
+                        "p95": 0.1465,
+                        "p99": 0.1485,
+                        "max": 0.1485
+                    }
+                },
+                {
+                    "name": "Terrain.ReleaseChunks",
+                    "calls": 24,
+                    "totalMilliseconds": 3.8331000000000006,
+                    "meanMillisecondsPerCall": 0.1597125,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 24,
+                        "mean": 0.1597125,
+                        "p50": 0.0764,
+                        "p95": 0.4576,
+                        "p99": 1.4386999999999999,
+                        "max": 1.4386999999999999
+                    }
+                },
+                {
+                    "name": "Terrain.PoolAcquire",
+                    "calls": 210,
+                    "totalMilliseconds": 0.5804999999999999,
+                    "meanMillisecondsPerCall": 0.002764285714285714,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.010749999999999998,
+                        "p50": 0.008199999999999999,
+                        "p95": 0.0422,
+                        "p99": 0.0532,
+                        "max": 0.0532
+                    }
+                },
+                {
+                    "name": "Terrain.GenerateChunk",
+                    "calls": 210,
+                    "totalMilliseconds": 19.1438,
+                    "meanMillisecondsPerCall": 0.09116095238095237,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.35451481481481486,
+                        "p50": 0.3442,
+                        "p95": 0.5544,
+                        "p99": 0.6304,
+                        "max": 0.6304
+                    }
+                },
+                {
+                    "name": "Terrain.BuildMeshData",
+                    "calls": 210,
+                    "totalMilliseconds": 13.928400000000006,
+                    "meanMillisecondsPerCall": 0.06632571428571431,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.2579333333333334,
+                        "p50": 0.267,
+                        "p95": 0.3534,
+                        "p99": 0.5306,
+                        "max": 0.5306
+                    }
+                },
+                {
+                    "name": "Terrain.ApplyMesh",
+                    "calls": 210,
+                    "totalMilliseconds": 4.312900000000002,
+                    "meanMillisecondsPerCall": 0.020537619047619056,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.0798685185185185,
+                        "p50": 0.0629,
+                        "p95": 0.1846,
+                        "p99": 0.1933,
+                        "max": 0.1933
+                    }
+                },
+                {
+                    "name": "Terrain.BuildNormals",
+                    "calls": 210,
+                    "totalMilliseconds": 3.3627,
+                    "meanMillisecondsPerCall": 0.01601285714285714,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.06227222222222219,
+                        "p50": 0.0669,
+                        "p95": 0.07769999999999999,
+                        "p99": 0.0833,
+                        "max": 0.0833
+                    }
+                },
+                {
+                    "name": "Terrain.RecalculateBounds",
+                    "calls": 210,
+                    "totalMilliseconds": 0.7692,
+                    "meanMillisecondsPerCall": 0.003662857142857143,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.014244444444444442,
+                        "p50": 0.013999999999999999,
+                        "p95": 0.0224,
+                        "p99": 0.0255,
+                        "max": 0.0255
+                    }
+                },
+                {
+                    "name": "Terrain.ProcessQueue",
+                    "calls": 54,
+                    "totalMilliseconds": 30.008200000000003,
+                    "meanMillisecondsPerCall": 0.5557074074074074,
+                    "millisecondsPerFrameWithCalls": {
+                        "samples": 54,
+                        "mean": 0.5557074074074074,
+                        "p50": 0.48719999999999999,
+                        "p95": 1.1041999999999999,
+                        "p99": 1.2302,
+                        "max": 1.2302
+                    }
+                }
+            ]
+        }
+    ]
+}

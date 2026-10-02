@@ -114,6 +114,62 @@ public static class V0Validation
         foreach (var mesh in meshes) if (mesh != null) return false;
         return true;
     }
+    static int CameraGroundRadius(Camera camera, float groundY, out float maxX, out float maxZ)
+    {
+        int radius = 0;
+        maxX = maxZ = 0;
+        for (int y = 0; y <= 1; y++)
+        {
+            for (int x = 0; x <= 1; x++)
+            {
+                var ray = camera.ViewportPointToRay(new Vector3(x, y, 0));
+                if (ray.direction.y >= 0) throw new Exception("Camera ground footprint is not bounded below the horizon");
+                var point = ray.GetPoint((groundY - ray.origin.y) / ray.direction.y);
+                var tile = new Vector2Int(Mathf.FloorToInt(point.x / controller.ChunkSize), Mathf.FloorToInt(point.z / controller.ChunkSize));
+                radius = Mathf.Max(radius, Mathf.Abs(tile.x - Center.x), Mathf.Abs(tile.y - Center.y));
+                maxX = Mathf.Max(maxX, Mathf.Abs(point.x - drone.position.x));
+                maxZ = Mathf.Max(maxZ, Mathf.Abs(point.z - drone.position.z));
+            }
+        }
+        return radius;
+    }
+    static void MeasureCameraCoverage(Camera camera)
+    {
+        var savedPosition = drone.position;
+        float savedAspect = camera.aspect;
+        var rows = new List<string> { "droneY,aspect,offsetX,offsetZ,groundY,requiredRadius,maxRelativeX,maxRelativeZ" };
+        int supportedRadius = 0, extendedRadius = 0;
+        try
+        {
+            foreach (float height in new[] { 35f, 45f, 60f })
+                foreach (float aspect in new[] { 4f / 3f, 16f / 9f, 21f / 9f })
+                    foreach (float offsetX in new[] { 0f, 10f, 19.99f })
+                        foreach (float offsetZ in new[] { 0f, 10f, 19.99f })
+                            foreach (float ground in new[] { -1f, 0f, 20f })
+                            {
+                                // Negative tile coordinates also exercise floor indexing.
+                                drone.position = new Vector3(-40f + offsetX, height, -60f + offsetZ);
+                                camera.aspect = aspect;
+                                int radius = CameraGroundRadius(camera, ground, out float maxX, out float maxZ);
+                                rows.Add(FormattableString.Invariant($"{height},{aspect},{offsetX},{offsetZ},{ground},{radius},{maxX},{maxZ}"));
+                                if (height <= 45f && aspect <= 16f / 9f) supportedRadius = Mathf.Max(supportedRadius, radius);
+                                extendedRadius = Mathf.Max(extendedRadius, radius);
+                            }
+            File.WriteAllLines("camera-coverage.csv", rows);
+            Check(supportedRadius == 5 && controller.RequestedRadius >= supportedRadius, "Scene buffer covers Y=35-45 at up to 16:9 over ground Y=-1 to 20");
+            Check(extendedRadius > controller.RequestedRadius, "Coverage measurement identifies higher-altitude/wider-aspect limits");
+        }
+        finally { drone.position = savedPosition; camera.aspect = savedAspect; }
+    }
+    static void PrepareReferenceNeighborhood()
+    {
+        // Keep the established radius-two lifecycle tests independent of the
+        // scene's larger viewing buffer, after validating the actual default.
+        Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
+        Set(controller, "chunkBufferCount", 2); Set(controller, "chunkRetentionMargin", 0);
+        StepStreaming(); pool.Reset();
+        Set(controller, "chunkRetentionMargin", 1); StepStreaming();
+    }
     static void CheckNormalEdges(string label)
     {
         bool edgesMatch = true, valid = true;
@@ -205,10 +261,13 @@ public static class V0Validation
                     drone.position += new Vector3(3f, 2f, -4f);
                     Check(Vector3.Distance(camera.transform.position - drone.position, cameraOffset) < 0.00001f, "Camera preserves its world offset when Drone translates");
                     drone.position = startPosition;
+                    Check(controller.RequestedRadius == 5 && Active.Count == 121, "Scene viewing buffer 5 creates 121 tiles at startup");
+                    CheckCoverage("Scene viewing defaults");
+                    MeasureCameraCoverage(camera);
                     var overlay = UnityEngine.Object.FindFirstObjectByType<StreamingDebugOverlay>();
                     Check(overlay != null && (ChunkController)Get(overlay, "controller") == controller && (ChunksPoolManager)Get(overlay, "pool") == pool, "Scene diagnostics reference the live controller and pool");
-                    Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
-                    Check(controller != null && controller.enabled && Active.Count == 25, "Default buffer 2 creates 25 tiles at startup");
+                    PrepareReferenceNeighborhood();
+                    Check(controller != null && controller.enabled && Active.Count == 25, "Reference buffer 2 creates 25 tiles after normalization");
                     CheckCoverage("Startup");
                     CheckNormalEdges("Startup across positive and negative tiles");
                     var mesh = Active[Vector2Int.zero].GetComponent<MeshFilter>().sharedMesh;
@@ -277,7 +336,8 @@ public static class V0Validation
                     pool = UnityEngine.Object.FindFirstObjectByType<ChunksPoolManager>();
                     drone = GameObject.Find("Drone").transform;
                     if (controller.PendingChunkCount > 0) return;
-                    Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
+                    Check(controller.RequestedRadius == 5 && Active.Count == 121, "Scene reload restores viewing buffer 5");
+                    PrepareReferenceNeighborhood();
                     Check(oldProvider == null && PerlinNoiseHeightProvider.GetInstance() != null && Active.Count == 25, "Scene reload initializes provider and configured neighborhood");
                     Check(AllDestroyed(oldMeshes), "Owned meshes released on scene unload");
                     Set(controller, "chunkBufferCount", 3); Wait(7); break;

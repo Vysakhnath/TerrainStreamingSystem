@@ -726,7 +726,7 @@ MonoBehaviour:
   playerPosition: {fileID: 1068705430}
   poolManager: {fileID: 188542812}
   terrainGenerator: {fileID: 71703847}
-  chunkBufferCount: 2
+  chunkBufferCount: 5
   chunkRetentionMargin: 1
 --- !u!4 &1253275358
 Transform:

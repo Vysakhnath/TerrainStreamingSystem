@@ -22,7 +22,7 @@ Shared-normal checks compare exact vector components across both axes and corner
 
 Select ChunkController in the scene Inspector:
 
-- **Chunk Buffer Count**: requested square radius. Default 2 creates 25 tiles (5 by 5).
+- **Chunk Buffer Count**: requested square radius. MainScene uses 5, creating 121 tiles (11 by 11), for the saved camera at Drone Y=35–45 and aspect ratios up to 16:9. A newly added controller still starts with the source field default of 2 (25 tiles).
 - **Chunk Retention Margin**: extra square rings that retain previously generated tiles. Default 1 permits at most 49 active tiles (7 by 7) with buffer 2. The margin does not eagerly generate extra tiles.
 
 A tile is released when its maximum X/Z coordinate offset exceeds buffer plus margin. Requested corners are always inside retention. Settings changes update streaming while stationary in Play Mode. Negative values are clamped to zero by Inspector validation.
@@ -39,7 +39,9 @@ Missing coordinates are queued once, sorted by squared distance from the Drone's
 
 MainScene's development overlay also displays current-frame streaming time and StreamingErrorCount/LastStreamingError. Error history includes dependency/configuration failures and persists through recovery until scene reload. F3 toggles the overlay; Editor gizmos show requested/retained boundaries. `Verify-V0.ps1 -RenderedCheck` builds and runs the visible graphics route described in the [profiling instructions](../Profiling/README.md).
 
-The correctness harness lets normal startup finish, then uses a large count cap and no time limit for existing coverage checks. Separate budgeted checks use one chunk per frame, rapid teleports, a shrinking buffer, and a tiny time limit. Budgeted profiling scenarios report time/frames to full coverage as well as per-frame CPU costs.
+The correctness harness lets scene startup finish, verifies radius 5 and camera ground bounds, then normalizes to radius 2 and clears only available pool objects for the established lifecycle checks. Scene reload verifies radius 5 again before normalization. Existing reference checks use a large count cap and no time limit; separate budgeted checks use one chunk per frame, rapid teleports, a shrinking buffer, and a tiny time limit. Budgeted profiling scenarios report time/frames to full coverage as well as per-frame CPU costs.
+
+`camera-coverage.csv` measures saved-camera corner rays intersecting ground planes Y=-1/0/20 at Drone heights 35/45/60, aspect ratios 4:3/16:9/21:9, and nine intra-tile positions at negative world coordinates. Radius 5 covers the chosen Y=35–45, up-to-16:9 envelope once the queue drains. Higher altitude, wider aspect, changed FOV/pitch, rapid movement and teleports can expose unloaded ground. The radius is fixed and configurable; automatic camera-based selection and prefetch are not implemented.
 
 The expected failure test sets resolution to zero and accepts only the generator's matching ArgumentOutOfRangeException. It verifies recovery at the next chunk boundary; automatic stationary retry is not implemented.
 

@@ -22,11 +22,14 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
     double started;
     float normalSpeed;
     Vector3 originalCameraPosition;
+    int startupFrame, initialCoverageFrames;
+    double startupTime, initialCoverageSeconds;
+    System.Collections.Generic.Dictionary<Vector2Int, GameObject> activeChunks;
     ProfilerRecorder draws, batches, triangles, gpu;
     readonly List<Sample> samples = new List<Sample>(6000);
     [Serializable] struct Sample
     {
-        public int phase, active, pending, pooled, generated;
+        public int phase, active, pending, pooled, generated, missingGroundBoundsTiles;
         public double seconds, frameMs, streamingMs, gpuMs;
         public long drawCalls, batchCount, triangleCount;
     }
@@ -36,6 +39,8 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
         public bool drawCounterAvailable, batchCounterAvailable, triangleCounterAvailable, gpuCounterAvailable;
         public int finalActive, finalPending, finalOwned, streamingErrors;
         public int screenWidth, screenHeight;
+        public int requestedRadius, retentionRadius, initialCoverageFrames, finalMissingGroundBoundsTiles;
+        public double initialCoverageSeconds;
         public float normalSpeed, maxSharedEdgeNormalAngleDegrees;
         public Vector3 originalCameraPosition;
         public Sample[] samples;
@@ -57,6 +62,8 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
         Profiler.SetAreaEnabled(ProfilerArea.CPU, true); Profiler.SetAreaEnabled(ProfilerArea.Rendering, true);
         Profiler.SetAreaEnabled(ProfilerArea.GPU, true); Profiler.enabled = true;
         check.controller = FindFirstObjectByType<ChunkController>();
+        check.activeChunks = (System.Collections.Generic.Dictionary<Vector2Int, GameObject>)typeof(ChunkController).GetField("activeChunkDict", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(check.controller);
+        check.startupFrame = Time.frameCount; check.startupTime = Time.realtimeSinceStartupAsDouble;
         check.pool = FindFirstObjectByType<ChunksPoolManager>();
         check.overlay = FindFirstObjectByType<StreamingDebugOverlay>();
         var movement = FindFirstObjectByType<DroneMovementController>();
@@ -67,19 +74,20 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
     {
         if (SystemInfo.graphicsDeviceType == UnityEngine.Rendering.GraphicsDeviceType.Null)
             throw new InvalidOperationException("Rendered check requires a graphics device.");
-        yield return new WaitForSecondsRealtime(1);
+        yield return null; // Allow the real controller Start/Update to request tiles.
         while (controller.PendingChunkCount > 0)
         {
             if (controller.GenerationPaused) throw new InvalidOperationException("Initial coverage failed.");
             yield return null;
         }
+        initialCoverageFrames = Time.frameCount - startupFrame + 1;
+        initialCoverageSeconds = Time.realtimeSinceStartupAsDouble - startupTime;
+        yield return new WaitForSecondsRealtime(1);
         originalCameraPosition = Camera.main.transform.position;
         ScreenCapture.CaptureScreenshot(Path.Combine(output, "original-camera.png"));
         yield return null; yield return null;
-        // Inspect flight above the height field without changing the saved scene camera.
+        // Use the saved camera rig throughout the Y=35-45 coverage route.
         drone.position = new Vector3(0, 35, 0);
-        Camera.main.transform.localPosition = new Vector3(0, 20, -30);
-        Camera.main.transform.localRotation = Quaternion.Euler(45, 0, 0);
         draws = ProfilerRecorder.StartNew(ProfilerCategory.Render, "Draw Calls Count", 1);
         batches = ProfilerRecorder.StartNew(ProfilerCategory.Render, "Batches Count", 1);
         triangles = ProfilerRecorder.StartNew(ProfilerCategory.Render, "Triangles Count", 1);
@@ -94,6 +102,8 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
         if (!rendered) throw new InvalidOperationException("No rendered draw/triangle samples. Keep the player window visible; hidden/occluded windows can suspend rendering.");
         if (controller.PendingChunkCount != 0 || controller.StreamingErrorCount != 0 || !overlay.enabled || string.IsNullOrEmpty(overlay.DisplayText))
             throw new InvalidOperationException("Rendered check did not finish coverage with healthy diagnostics.");
+        int finalMissing = MissingGroundBoundsTiles();
+        if (finalMissing != 0) throw new InvalidOperationException("Final saved-camera ground bounds are not fully loaded.");
         ScreenCapture.CaptureScreenshot(Path.Combine(output, "complete-coverage.png"));
         yield return null; yield return null;
         bool gpuAvailable = false;
@@ -102,13 +112,16 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
             unity = Application.unityVersion, graphicsDevice = SystemInfo.graphicsDeviceName,
             graphicsAPI = SystemInfo.graphicsDeviceType.ToString(), processor = SystemInfo.processorType,
             timestampUtc = DateTime.UtcNow.ToString("O"),
-            methodology = "Windowed Windows development player, 60 Hz target, VSync off, overlay visible, CPU/Rendering/GPU profiler enabled; no Deep Profiling. Real controller Update with default 4 chunks/2 ms budget. Normal saved Drone speed for 5 s, fast 300 units/s for 5 s, then teleport and hold for 8 s. Camera raised for flight inspection after original-camera screenshot with initial coverage complete. Frame intervals include pacing, rendering, overlay, profiling and screenshot overhead. Recorder values describe the previous completed frame. GPU values are unavailable unless positive nanosecond counter samples exist. Single-machine smoke check, not release performance.",
+            methodology = "Windowed Windows development player, 60 Hz target, VSync off, saved scene camera and overlay, CPU/Rendering/GPU profiler enabled; no Deep Profiling. Real controller Update with 4 chunks/2 ms soft budget. Normal saved Drone speed for 5 s while altitude rises from Y=35 to 45, fast 300 units/s at Y=45 for 5 s, then teleport and hold at Y=45 for 8 s. No camera pose override. MissingGroundBoundsTiles counts inactive/unloaded tiles in the conservative camera-corner ground-plane Y=-1 bounding rectangle; transient missing tiles are allowed while filling, final count must be zero. Startup coverage includes bootstrap/frame scheduling. Frame intervals include pacing, rendering, overlay, profiling and capture overhead. Recorder values describe the previous completed frame. GPU values require positive nanosecond counter samples. Single-machine smoke check, not release performance.",
             drawCounterAvailable = draws.Valid, batchCounterAvailable = batches.Valid, triangleCounterAvailable = triangles.Valid,
             gpuCounterAvailable = gpuAvailable, finalActive = controller.ActiveChunkCount,
             finalPending = controller.PendingChunkCount, finalOwned = pool.OwnedChunkCount,
             streamingErrors = controller.StreamingErrorCount, samples = samples.ToArray(),
             screenWidth = Screen.width, screenHeight = Screen.height, normalSpeed = normalSpeed,
-            originalCameraPosition = originalCameraPosition, maxSharedEdgeNormalAngleDegrees = SharedEdgeNormalAngle()
+            originalCameraPosition = originalCameraPosition, maxSharedEdgeNormalAngleDegrees = SharedEdgeNormalAngle(),
+            requestedRadius = controller.RequestedRadius, retentionRadius = controller.RetentionRadius,
+            initialCoverageFrames = initialCoverageFrames, initialCoverageSeconds = initialCoverageSeconds,
+            finalMissingGroundBoundsTiles = finalMissing
         };
         File.WriteAllText(Path.Combine(output, "rendered-check.json"), JsonUtility.ToJson(result, true));
         File.WriteAllText(Path.Combine(output, "completed.txt"), "Rendered route completed; overlay populated; final coverage complete; no streaming errors.");
@@ -118,9 +131,9 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
     {
         if (!running) return;
         double elapsed = Time.realtimeSinceStartupAsDouble - started;
-        if (elapsed < 5) drone.position = new Vector3((float)elapsed * normalSpeed, 35, 0);
-        else if (elapsed < 10) drone.position = new Vector3(normalSpeed * 5 + (float)(elapsed - 5) * 300, 35, 0);
-        else drone.position = new Vector3(-5000, 35, 5000);
+        if (elapsed < 5) drone.position = new Vector3((float)elapsed * normalSpeed, 35 + (float)elapsed * 2, 0);
+        else if (elapsed < 10) drone.position = new Vector3(normalSpeed * 5 + (float)(elapsed - 5) * 300, 45, 0);
+        else drone.position = new Vector3(-5000, 45, 5000);
     }
     void LateUpdate()
     {
@@ -131,6 +144,7 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
         samples.Add(new Sample {
             phase = phase, seconds = elapsed, frameMs = Time.unscaledDeltaTime * 1000,
             streamingMs = controller.StreamingMillisecondsThisFrame, active = controller.ActiveChunkCount,
+            missingGroundBoundsTiles = MissingGroundBoundsTiles(),
             pending = controller.PendingChunkCount, pooled = pool.PooledChunkCount, generated = controller.GeneratedChunksThisFrame,
             drawCalls = draws.Valid ? draws.LastValue : -1, batchCount = batches.Valid ? batches.LastValue : -1,
             triangleCount = triangles.Valid ? triangles.LastValue : -1,
@@ -139,6 +153,29 @@ public sealed class TerrainRenderedCheck : MonoBehaviour
         if (!normalShot && elapsed >= 4) { ScreenCapture.CaptureScreenshot(Path.Combine(output, "normal-flight.png")); normalShot = true; }
         if (!fastShot && elapsed >= 9) { ScreenCapture.CaptureScreenshot(Path.Combine(output, "fast-flight.png")); fastShot = true; }
         if (!teleportShot && phase == 2) { ScreenCapture.CaptureScreenshot(Path.Combine(output, "teleport-filling.png")); teleportShot = true; }
+    }
+    int MissingGroundBoundsTiles()
+    {
+        int minX = int.MaxValue, minZ = int.MaxValue, maxX = int.MinValue, maxZ = int.MinValue;
+        var camera = Camera.main;
+        for (int y = 0; y <= 1; y++)
+            for (int x = 0; x <= 1; x++)
+            {
+                var ray = camera.ViewportPointToRay(new Vector3(x, y, 0));
+                if (ray.direction.y >= 0) throw new InvalidOperationException("Saved camera sees the horizon; ground coverage is unbounded.");
+                var point = ray.GetPoint((-1f - ray.origin.y) / ray.direction.y);
+                int tileX = Mathf.FloorToInt(point.x / controller.ChunkSize), tileZ = Mathf.FloorToInt(point.z / controller.ChunkSize);
+                minX = Mathf.Min(minX, tileX); maxX = Mathf.Max(maxX, tileX);
+                minZ = Mathf.Min(minZ, tileZ); maxZ = Mathf.Max(maxZ, tileZ);
+            }
+        int missing = 0;
+        for (int z = minZ; z <= maxZ; z++)
+            for (int x = minX; x <= maxX; x++)
+                if (!activeChunks.TryGetValue(new Vector2Int(x, z), out var chunk) || !chunk.activeSelf) missing++;
+        int bound = (controller.RetentionRadius * 2 + 1) * (controller.RetentionRadius * 2 + 1);
+        if (pool.OwnedChunkCount > bound || pool.OwnedChunkCount != controller.ActiveChunkCount + pool.PooledChunkCount || controller.GeneratedChunksThisFrame > 4)
+            throw new InvalidOperationException("Rendered route exceeded its ownership bound or generation cap.");
+        return missing;
     }
     void OnLog(string message, string trace, LogType type)
     {

@@ -1,0 +1,201 @@
+Camera follows an unscaled Drone root
+Visual and collider preserve original Drone dimensions
+Starting Drone and camera are above terrain and look downward
+Camera preserves its world offset when Drone translates
+Scene viewing buffer 5 creates 121 tiles at startup
+Scene viewing defaults: coverage and active-count bound
+Scene viewing defaults: every owned object is active or pooled
+Scene buffer covers Y=35-45 at up to 16:9 over ground Y=-1 to 20
+Coverage measurement identifies higher-altitude/wider-aspect limits
+Scene diagnostics reference the live controller and pool
+Reference buffer 2 creates 25 tiles after normalization
+Startup: coverage and active-count bound
+Startup: every owned object is active or pooled
+Startup across positive and negative tiles: identical normals on both shared-edge axes, including corners
+Startup across positive and negative tiles: finite unit normals pointing upward
+V0 mesh dimensions and topology preserved
+Default grid preserves original noise heights
+Border normal uses correct central height gradient without loaded-neighbor dependence
+Negative coordinates use floor indexing
+Diagonal boundary crossing: coverage and active-count bound
+Diagonal boundary crossing: every owned object is active or pooled
+One-ring margin retains visited tiles after diagonal movement
+Shared edge height 0
+Shared edge height 1
+Shared edge height 2
+Shared edge height 3
+Shared edge height 4
+Shared edge height 5
+Shared edge height 6
+Shared edge height 7
+Shared edge height 8
+Shared edge height 9
+Shared edge height 10
+Distant negative-Z teleport: coverage and active-count bound
+Distant negative-Z teleport: every owned object is active or pooled
+Distant negative-Z teleport: identical normals on both shared-edge axes, including corners
+Distant negative-Z teleport: finite unit normals pointing upward
+Teleport releases before acquisition and reuses existing objects
+Generation failure is retained in diagnostics without repeated errors
+Failed generation releases guard and does not register a tile
+Failed generation returns the acquired object
+Recovery resumes streaming and preserves error history
+Recovery on next boundary: coverage and active-count bound
+Recovery on next boundary: every owned object is active or pooled
+Reset test has available meshes to release
+Pool reset destroys released runtime meshes
+Pool reset preserves active ownership
+Non-divisible chunk size spans full tile
+Regeneration preserves previously published vertex positions
+Resolution change rebuilds cached topology on an existing mesh
+Changed resolution and noninteger chunk size preserve shared normals at negative Z
+Restored resolution preserves triangle winding and indices
+Overwriting shared scratch buffers leaves published meshes unchanged
+Duplicate pool return rejected
+Scene reload restores viewing buffer 5
+Scene reload initializes provider and configured neighborhood
+Owned meshes released on scene unload
+Buffer 3 changed while stationary: coverage and active-count bound
+Buffer 3 changed while stationary: every owned object is active or pooled
+7 by 7 neighborhood retains its corners
+Buffer 1 and zero margin while stationary: coverage and active-count bound
+Buffer 1 and zero margin while stationary: every owned object is active or pooled
+Shrinking returns excess tiles without destroying reusable objects
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 1: coverage and active-count bound
+Traversal 1: every owned object is active or pooled
+Traversal 1: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 2: coverage and active-count bound
+Traversal 2: every owned object is active or pooled
+Traversal 2: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 3: coverage and active-count bound
+Traversal 3: every owned object is active or pooled
+Traversal 3: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 4: coverage and active-count bound
+Traversal 4: every owned object is active or pooled
+Traversal 4: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 5: coverage and active-count bound
+Traversal 5: every owned object is active or pooled
+Traversal 5: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 6: coverage and active-count bound
+Traversal 6: every owned object is active or pooled
+Traversal 6: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 7: coverage and active-count bound
+Traversal 7: every owned object is active or pooled
+Traversal 7: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 8: coverage and active-count bound
+Traversal 8: every owned object is active or pooled
+Traversal 8: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 9: coverage and active-count bound
+Traversal 9: every owned object is active or pooled
+Traversal 9: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 10: coverage and active-count bound
+Traversal 10: every owned object is active or pooled
+Traversal 10: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 11: coverage and active-count bound
+Traversal 11: every owned object is active or pooled
+Traversal 11: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 12: coverage and active-count bound
+Traversal 12: every owned object is active or pooled
+Traversal 12: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 13: coverage and active-count bound
+Traversal 13: every owned object is active or pooled
+Traversal 13: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 14: coverage and active-count bound
+Traversal 14: every owned object is active or pooled
+Traversal 14: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 15: coverage and active-count bound
+Traversal 15: every owned object is active or pooled
+Traversal 15: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 16: coverage and active-count bound
+Traversal 16: every owned object is active or pooled
+Traversal 16: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 17: coverage and active-count bound
+Traversal 17: every owned object is active or pooled
+Traversal 17: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 18: coverage and active-count bound
+Traversal 18: every owned object is active or pooled
+Traversal 18: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 19: coverage and active-count bound
+Traversal 19: every owned object is active or pooled
+Traversal 19: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 20: coverage and active-count bound
+Traversal 20: every owned object is active or pooled
+Traversal 20: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 21: coverage and active-count bound
+Traversal 21: every owned object is active or pooled
+Traversal 21: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 22: coverage and active-count bound
+Traversal 22: every owned object is active or pooled
+Traversal 22: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 23: coverage and active-count bound
+Traversal 23: every owned object is active or pooled
+Traversal 23: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Traversal 24: coverage and active-count bound
+Traversal 24: every owned object is active or pooled
+Traversal 24: pool high-water count remains 49
+Buffer 2 restored while stationary: coverage and active-count bound
+Buffer 2 restored while stationary: every owned object is active or pooled
+Buffer zero: coverage and active-count bound
+Buffer zero: every owned object is active or pooled
+Buffer zero still supports a single requested tile
+Inspector validation clamps negative radii
+Budget-one teleport activates nearest tile and leaves 48 queued requests
+Per-frame chunk cap observed
+Rapid teleport replaces pending requests and prioritizes new center
+Queued cancellation does not acquire or orphan objects
+No obsolete tiles become active
+Budgeted stationary queue drain after shrink: coverage and active-count bound
+Budgeted stationary queue drain after shrink: every owned object is active or pooled
+Queue shrink removes stale outer-ring requests
+Tiny time budget allows one indivisible chunk and defers remaining work
+Queue completes after time limit disabled: coverage and active-count bound
+Queue completes after time limit disabled: every owned object is active or pooled
+Stationary updates finish requested square without duplicates
