@@ -12,6 +12,8 @@ The runner copies Assets, Packages, and ProjectSettings into a unique ignored Te
 
 Checks cover startup, unchanged mesh topology and border heights, negative coordinates, diagonal movement, teleports, generation failure/recovery, pool reset and mesh cleanup, duplicate returns, scene reload, stationary configuration changes, buffer radii 0/1/2/3, and 24 movement/teleport steps with object-count bounds.
 
+Mesh-buffer reuse checks also cover regenerated vertex positions, topology changes on an existing mesh, restored indices/winding, and independence of already published meshes after scratch-buffer overwrite. For allocation and timing comparisons, run with `-Benchmark`; see [profiling instructions](../Profiling/README.md).
+
 ## Neighborhood settings
 
 Select ChunkController in the scene Inspector:

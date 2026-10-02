@@ -113,6 +113,39 @@ public static class V0Validation
         foreach (var mesh in meshes) if (mesh != null) return false;
         return true;
     }
+    static void CheckMeshReuse(GameObject temporary)
+    {
+        var publishedMesh = Active[Center].GetComponent<MeshFilter>().sharedMesh;
+        var publishedVertices = publishedMesh.vertices;
+        var publishedTriangles = publishedMesh.triangles;
+        var publishedNormals = publishedMesh.normals;
+        var publishedBounds = publishedMesh.bounds;
+        var scratchMesh = temporary.GetComponent<MeshFilter>().sharedMesh;
+
+        generator.GenerateMeshData(Center, 20, temporary);
+        var regenerated = scratchMesh.vertices;
+        bool matches = regenerated.Length == publishedVertices.Length;
+        for (int i = 0; matches && i < regenerated.Length; i++) matches &= regenerated[i] == publishedVertices[i];
+        Check(matches, "Regeneration preserves previously published vertex positions");
+
+        Set(generator, "resolution", 4);
+        generator.GenerateMeshData(new Vector2Int(17, -9), 21.5f, temporary);
+        Check(scratchMesh.vertexCount == 25 && scratchMesh.triangles.Length == 96 && Mathf.Approximately(scratchMesh.bounds.size.x, 21.5f), "Resolution change rebuilds cached topology on an existing mesh");
+        Set(generator, "resolution", 10);
+        generator.GenerateMeshData(Center, 20, temporary);
+        var restoredTriangles = scratchMesh.triangles;
+        matches = restoredTriangles.Length == publishedTriangles.Length;
+        for (int i = 0; matches && i < restoredTriangles.Length; i++) matches &= restoredTriangles[i] == publishedTriangles[i];
+        Check(scratchMesh.vertexCount == 121 && matches, "Restored resolution preserves triangle winding and indices");
+
+        var verticesAfter = publishedMesh.vertices;
+        var trianglesAfter = publishedMesh.triangles;
+        var normalsAfter = publishedMesh.normals;
+        matches = publishedMesh.bounds == publishedBounds;
+        for (int i = 0; matches && i < publishedVertices.Length; i++) matches &= verticesAfter[i] == publishedVertices[i] && normalsAfter[i] == publishedNormals[i];
+        for (int i = 0; matches && i < publishedTriangles.Length; i++) matches &= trianglesAfter[i] == publishedTriangles[i];
+        Check(matches, "Overwriting shared scratch buffers leaves published meshes unchanged");
+    }
     static void Tick()
     {
         if (!running) return;
@@ -169,6 +202,7 @@ public static class V0Validation
                     var temporaryMesh = temporary.Item2.GetComponent<MeshFilter>().sharedMesh;
                     generator.GenerateMeshData(new Vector2Int(-2, 1), 21.5f, temporary.Item2);
                     Check(Mathf.Approximately(temporaryMesh.bounds.size.x, 21.5f), "Non-divisible chunk size spans full tile");
+                    CheckMeshReuse(temporary.Item2);
                     pool.SetPool(temporary);
                     bool rejected = false;
                     try { pool.SetPool(temporary); } catch (InvalidOperationException) { rejected = true; }

@@ -241,7 +241,8 @@ public sealed class TerrainBenchmark : MonoBehaviour
             samples[i].allocated = gcValues[gcOffset + i].Value;
             result.gcAllocatedBytes += samples[i].allocated;
         }
-        if (name == "startup" && result.gcAllocatedBytes < (buffer * 2 + 1) * (buffer * 2 + 1) * 3852)
+        // A fresh generator allocates one buffer pair; later chunks reuse it.
+        if (name == "startup" && result.gcAllocatedBytes < 3852)
         {
             string values = "";
             foreach (var value in gcValues) values += value.Value + ":" + value.Count + ",";

@@ -35,6 +35,8 @@ public class ChunkController : MonoBehaviour
     private bool isUpdating;
 
     private Dictionary<Vector2Int, GameObject> activeChunkDict = new Dictionary<Vector2Int, GameObject>();
+    private readonly List<Vector2Int> requestedChunks = new List<Vector2Int>();
+    private readonly List<Vector2Int> itemsToRemove = new List<Vector2Int>();
 
     private void OnValidate()
     {
@@ -138,7 +140,7 @@ public class ChunkController : MonoBehaviour
     private void RemoveFarChunks()
     {
         using var releaseScope = ReleaseMarker.Auto();
-        List<Vector2Int> itemsToRemove = new List<Vector2Int>();
+        itemsToRemove.Clear();
         int retentionRadius = chunkBufferCount + chunkRetentionMargin;
         foreach (Vector2Int chunk in activeChunkDict.Keys)
         {
@@ -160,7 +162,7 @@ public class ChunkController : MonoBehaviour
     private List<Vector2Int> GenerateChunkList()
     {
         using var selectionScope = SelectionMarker.Auto();
-        List<Vector2Int> chunkList = new List<Vector2Int>();
+        requestedChunks.Clear();
 
         Vector2Int chunk;
         for (int x = currentPlayerChunk.x - chunkBufferCount; x <= currentPlayerChunk.x + chunkBufferCount; x++)
@@ -168,10 +170,10 @@ public class ChunkController : MonoBehaviour
             for (int y = currentPlayerChunk.y - chunkBufferCount; y <= currentPlayerChunk.y + chunkBufferCount; y++)
             {
                 chunk = new Vector2Int(x, y);
-                chunkList.Add(chunk);
+                requestedChunks.Add(chunk);
             }
         }
 
-        return chunkList;
+        return requestedChunks;
     }
 }

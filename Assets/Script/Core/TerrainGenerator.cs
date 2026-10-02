@@ -12,6 +12,12 @@ public class TerrainGenerator : MonoBehaviour
 
     private int resolution = 10;
 
+    // Generation is synchronous: Unity copies these buffers into each owned mesh.
+    // Concurrent generation would require separate buffers per in-flight request.
+    private Vector3[] vertices;
+    private int[] triangle;
+    private int bufferedResolution = -1;
+
     private PerlinNoiseHeightProvider perlinNoiseHeightProvider;
 
     public bool Initialize()
@@ -34,12 +40,9 @@ public class TerrainGenerator : MonoBehaviour
         if (terrain == null || !terrain.TryGetComponent<MeshFilter>(out var terrainMeshFilter) || terrainMeshFilter.sharedMesh == null)
             throw new System.ArgumentException("Terrain requires a MeshFilter with an owned mesh.", nameof(terrain));
 
-        Vector3[] vertices;
-        int[] triangle;
         using (DataMarker.Auto())
         {
-            vertices = new Vector3[(resolution + 1) * (resolution + 1)];
-            triangle = new int[resolution * resolution * 6];
+            EnsureMeshBuffers();
 
             float stepOffset = chunkSize / resolution;
             int vertexIndex = 0;
@@ -54,37 +57,45 @@ public class TerrainGenerator : MonoBehaviour
                 }
             }
 
-            int triangleIndex = 0;
-            int v = 0;
-            for (int z = 0; z < resolution; z++)
-            {
-                for (int x = 0; x < resolution; x++)
-                {
-                    v = z * (resolution + 1) + x;
-                    // Setting first triangle
-                    triangle[triangleIndex++] = v;
-                    triangle[triangleIndex++] = v + resolution + 1;
-                    triangle[triangleIndex++] = v + 1;
-
-                    // Setting second triangle
-                    triangle[triangleIndex++] = v + 1;
-                    triangle[triangleIndex++] = v + resolution + 1;
-                    triangle[triangleIndex++] = v + resolution + 2;
-                }
-            }
-
         }
 
         var terrainMesh = terrainMeshFilter.sharedMesh;
 
         using (ApplyMarker.Auto())
         {
+            if (terrainMesh.vertexCount != 0 && terrainMesh.vertexCount != vertices.Length)
+                terrainMesh.Clear();
             terrainMesh.SetVertices(vertices);
             terrainMesh.triangles = triangle;
 
             using (NormalsMarker.Auto()) terrainMesh.RecalculateNormals();
             using (BoundsMarker.Auto()) terrainMesh.RecalculateBounds();
         }
+    }
+
+    private void EnsureMeshBuffers()
+    {
+        if (bufferedResolution == resolution) return;
+
+        var nextVertices = new Vector3[(resolution + 1) * (resolution + 1)];
+        var nextTriangles = new int[resolution * resolution * 6];
+        int triangleIndex = 0;
+        for (int z = 0; z < resolution; z++)
+        {
+            for (int x = 0; x < resolution; x++)
+            {
+                int v = z * (resolution + 1) + x;
+                nextTriangles[triangleIndex++] = v;
+                nextTriangles[triangleIndex++] = v + resolution + 1;
+                nextTriangles[triangleIndex++] = v + 1;
+                nextTriangles[triangleIndex++] = v + 1;
+                nextTriangles[triangleIndex++] = v + resolution + 1;
+                nextTriangles[triangleIndex++] = v + resolution + 2;
+            }
+        }
+        vertices = nextVertices;
+        triangle = nextTriangles;
+        bufferedResolution = resolution;
     }
 
     private void OnDrawGizmos()
