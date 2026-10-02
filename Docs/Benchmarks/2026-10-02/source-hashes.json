@@ -1,0 +1,42 @@
+[
+  {
+    "path": "Assets/Script/Core/ChunkController.cs",
+    "sha256": "35883B38FEB77E9CE54E42425A867DAADDB4DBE82B45D1217BE1AEB57893FFF6"
+  },
+  {
+    "path": "Assets/Script/Core/ChunksPoolManager.cs",
+    "sha256": "9445EC158698E0419F3B50DC75F8EE504C552E24E7ABC7432505E7ECC4D6A714"
+  },
+  {
+    "path": "Assets/Script/Core/TerrainGenerator.cs",
+    "sha256": "9729173C51E7700305372B6854A6B2BE8FF94AA5191F9F7A86E1C36D5536C86B"
+  },
+  {
+    "path": "Assets/Script/Core/PerlinNoiseHeightProvider.cs",
+    "sha256": "F52F5FAB778B7ACDC949D78698702CCB56DDDBEB06A74173ECA53EC81558F762"
+  },
+  {
+    "path": "Assets/Script/Core/DroneMovementController.cs",
+    "sha256": "31D42EDDBF342DA4F2D64C5D22DFCB07A307E0FF6F3774A91B95087C7BA82826"
+  },
+  {
+    "path": "Assets/Scenes/MainScene.unity",
+    "sha256": "77DB77E98CE563260B80011364A10E3656097493E62858D03C3A5844897E5E29"
+  },
+  {
+    "path": "Packages/manifest.json",
+    "sha256": "A7860488B9D87E669DE7D8F3B1330CB3D75A67EB88D0503AD3607FEB718A36EB"
+  },
+  {
+    "path": "Packages/packages-lock.json",
+    "sha256": "6BBF6C9BE7F750E9701D485ECEBEAF0A0DE3F5CC5DC14D088D62BEECC530D292"
+  },
+  {
+    "path": "ProjectSettings/ProjectVersion.txt",
+    "sha256": "76B9472C75CFE6E8B4824BE2840D7A762CC52402B8F65CA0B01D6FAEBEF347F2"
+  },
+  {
+    "path": "Tools/Profiling/TerrainBenchmark.cs",
+    "sha256": "00B98C6F0D856E1B1736B9F573E70A503A3079709F0E6FEC82CAEFC1601E8A66"
+  }
+]

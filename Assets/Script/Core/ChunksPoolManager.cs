@@ -1,8 +1,13 @@
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 public class ChunksPoolManager : MonoBehaviour
 {
+    private static readonly ProfilerMarker AcquireMarker = new ProfilerMarker("Terrain.PoolAcquire");
+
+    public int PooledChunkCount => poolOfChunks.Count;
+    public int OwnedChunkCount => ownedChunks.Count;
     [SerializeField]
     private Material terrainMat;
 
@@ -33,6 +38,7 @@ public class ChunksPoolManager : MonoBehaviour
 
     public (Vector2Int, GameObject) GetChunkFromPool()
     {
+        using var acquireScope = AcquireMarker.Auto();
         while (poolOfChunks.Count > 0)
         {
             var terrain = poolOfChunks.Pop();

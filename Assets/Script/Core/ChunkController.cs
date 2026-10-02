@@ -1,8 +1,14 @@
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 
 public class ChunkController : MonoBehaviour
 {
+    private static readonly ProfilerMarker StreamingMarker = new ProfilerMarker("Terrain.StreamingUpdate");
+    private static readonly ProfilerMarker SelectionMarker = new ProfilerMarker("Terrain.SelectChunks");
+    private static readonly ProfilerMarker ReleaseMarker = new ProfilerMarker("Terrain.ReleaseChunks");
+
+    public int ActiveChunkCount => activeChunkDict.Count;
     [SerializeField]
     private Transform playerPosition;
 
@@ -82,6 +88,7 @@ public class ChunkController : MonoBehaviour
     private void UpdateChunk()
     {
         if (isUpdating) return;
+        using var streamingScope = StreamingMarker.Auto();
         isUpdating = true;
         try
         {
@@ -130,6 +137,7 @@ public class ChunkController : MonoBehaviour
 
     private void RemoveFarChunks()
     {
+        using var releaseScope = ReleaseMarker.Auto();
         List<Vector2Int> itemsToRemove = new List<Vector2Int>();
         int retentionRadius = chunkBufferCount + chunkRetentionMargin;
         foreach (Vector2Int chunk in activeChunkDict.Keys)
@@ -151,6 +159,7 @@ public class ChunkController : MonoBehaviour
 
     private List<Vector2Int> GenerateChunkList()
     {
+        using var selectionScope = SelectionMarker.Auto();
         List<Vector2Int> chunkList = new List<Vector2Int>();
 
         Vector2Int chunk;

@@ -1,5 +1,7 @@
 param(
-    [string]$UnityPath = 'C:/Program Files/Unity/Hub/Editor/6000.3.12f1/Editor/Unity.exe'
+    [string]$UnityPath = 'C:/Program Files/Unity/Hub/Editor/6000.3.12f1/Editor/Unity.exe',
+    [switch]$Benchmark,
+    [ValidateRange(0, 600)][int]$SoakSeconds = 180
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
@@ -12,6 +14,11 @@ foreach ($folder in @('Assets', 'Packages', 'ProjectSettings')) {
 $editorRoot = Join-Path $runRoot 'Assets/Editor'
 New-Item -ItemType Directory -Path $editorRoot -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'V0Validation.cs') -Destination $editorRoot
+if ($Benchmark) {
+    $benchmarkAssets = Join-Path $runRoot 'Assets/Benchmark'
+    New-Item -ItemType Directory -Path $benchmarkAssets -Force | Out-Null
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'Tools/Profiling/TerrainBenchmark.cs') -Destination $benchmarkAssets
+}
 $logPath = Join-Path $runRoot 'validation.log'
 Write-Output "Validation copy: $runRoot"
 $process = Start-Process -FilePath $UnityPath -ArgumentList "-batchmode -nographics -projectPath `"$runRoot`" -executeMethod V0Validation.Run -logFile `"$logPath`"" -WindowStyle Hidden -PassThru
@@ -31,3 +38,26 @@ if ($process.ExitCode -ne 0 -or !(Test-Path -LiteralPath (Join-Path $runRoot 'ru
 }
 Write-Output "Validation passed. Build and reports: $runRoot"
 
+
+if ($Benchmark) {
+    $benchmarkOutput = Join-Path $runRoot 'BenchmarkResults'
+    New-Item -ItemType Directory -Path $benchmarkOutput -Force | Out-Null
+    $playerPath = Join-Path $runRoot 'Builds/Validation/DroneTerrainSystem.exe'
+    $playerLog = Join-Path $runRoot 'benchmark-player.log'
+    $revision = git -C $projectRoot rev-parse --short HEAD
+    if (git -C $projectRoot status --porcelain) { $revision += '-dirty' }
+    $player = Start-Process -FilePath $playerPath -ArgumentList "-batchmode -nographics -terrainBenchmark -benchmarkOutput `"$benchmarkOutput`" -benchmarkSoakSeconds $SoakSeconds -benchmarkRevision $revision -logFile `"$playerLog`"" -WindowStyle Hidden -PassThru
+    $playerDeadline = [DateTime]::UtcNow.AddSeconds($SoakSeconds + 180)
+    while (!$player.WaitForExit(1000)) {
+        if ([DateTime]::UtcNow -gt $playerDeadline) {
+            Stop-Process -Id $player.Id
+            throw "Player benchmark timed out. See $playerLog"
+        }
+    }
+    $failurePath = Join-Path $benchmarkOutput 'failure.txt'
+    if (Test-Path -LiteralPath $failurePath) { Get-Content -LiteralPath $failurePath }
+    if ($player.ExitCode -ne 0 -or !(Test-Path -LiteralPath (Join-Path $benchmarkOutput 'completed.txt'))) {
+        throw "Player benchmark failed. See $playerLog"
+    }
+    Write-Output "Benchmark results: $benchmarkOutput"
+}

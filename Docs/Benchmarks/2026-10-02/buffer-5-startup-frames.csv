@@ -1,0 +1,2 @@
+sample,streaming_ms,frame_interval_ms,gc_allocated_in_frame_bytes,active,pooled,owned
+0,7.325100,NaN,529288,121,0,121
