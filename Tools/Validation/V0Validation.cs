@@ -165,6 +165,8 @@ public static class V0Validation
                     generator = UnityEngine.Object.FindFirstObjectByType<TerrainGenerator>();
                     drone = GameObject.Find("Drone").transform;
                     if (controller.PendingChunkCount > 0) return;
+                    var overlay = UnityEngine.Object.FindFirstObjectByType<StreamingDebugOverlay>();
+                    Check(overlay != null && (ChunkController)Get(overlay, "controller") == controller && (ChunksPoolManager)Get(overlay, "pool") == pool, "Scene diagnostics reference the live controller and pool");
                     Set(controller, "maxChunksPerFrame", 1000); Set(controller, "generationBudgetMilliseconds", 0f);
                     Check(controller != null && controller.enabled && Active.Count == 25, "Default buffer 2 creates 25 tiles at startup");
                     CheckCoverage("Startup");
@@ -187,11 +189,13 @@ public static class V0Validation
                     expectFailure = true; Set(generator, "resolution", 0);
                     drone.position = new Vector3(1020, 0, -1000); Wait(3); break;
                 case 3:
+                    Check(controller.GenerationPaused && controller.StreamingErrorCount == 1 && !string.IsNullOrEmpty(controller.LastStreamingError), "Generation failure is retained in diagnostics without repeated errors");
                     Check(expectedFailures == 1 && !(bool)Get(controller, "isUpdating") && Active.Count == 25, "Failed generation releases guard and does not register a tile");
                     Check(PooledCount == pooledBeforeFailure && Owned.Count == ownedBeforeFailure, "Failed generation returns the acquired object");
                     expectFailure = false; Set(generator, "resolution", 10);
                     drone.position = new Vector3(1040, 0, -1000); Wait(4); break;
                 case 4:
+                    Check(!controller.GenerationPaused && controller.StreamingErrorCount == 1, "Recovery resumes streaming and preserves error history");
                     CheckCoverage("Recovery on next boundary");
                     var resetList = new List<Mesh>();
                     var pooled = (HashSet<GameObject>)Get(pool, "pooledChunks");

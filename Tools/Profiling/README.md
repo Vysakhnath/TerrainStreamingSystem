@@ -65,7 +65,23 @@ Profiler markers are also available in ordinary Editor Play Mode/development bui
 - Terrain.RecalculateBounds
 - Terrain.ProcessQueue
 
-Attach Unity's CPU Profiler to a rendered development player to inspect these scopes under a real camera/render workload. This automated baseline provides no GPU, draw-call, texture-upload, or rendered frame-time measurements.
+Attach Unity's CPU Profiler to a rendered development player to inspect these scopes under a real camera/render workload. The headless benchmark provides no GPU, draw-call, texture-upload, or rendered frame-time measurements.
+
+## Streaming diagnostics and rendered check
+
+MainScene includes StreamingDebugOverlay, with explicit controller/pool references. In Editor Play Mode and development players, F3 toggles the overlay. It shows tile coordinates, active/queued/pooled/owned counts, generated tiles and streaming CPU time for the last sampled frame, interval peaks, status, and error history. Text refreshes at 4 Hz and immediately on tile or queue/paused-state transitions. Interval peaks preserve short bursts between samples. This optional IMGUI diagnostic allocates display strings when refreshed; its UI cost is part of rendered measurements. Disable the component to remove that cost. Headless and `-terrainBenchmark` runs disable it automatically; release players compile out its Update/LateUpdate/OnGUI code.
+
+With Gizmos enabled in the Editor Scene/Game view, the overlay component draws the current tile in white, requested-square boundary in cyan, and retention boundary in amber. `Show Boundaries` and `Boundary Height` configure these editor-only wire outlines. They are not terrain bounding boxes or player-rendered lines.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File Tools/Validation/Verify-V0.ps1 -RenderedCheck
+```
+
+This explicitly opens a visible 1280x720 windowed development player, then closes it after the route. Keep the window visible; hidden/occluded windows can suspend rendering. The check fails if no positive draw/triangle samples occur. The automated route uses the real controller Update with default budgets: five seconds at the saved Drone speed, five seconds at 300 units/second, then a teleport and eight-second hold. It captures the original camera after initial coverage, then raises the Drone/camera for terrain inspection without modifying the saved scene pose.
+
+`RenderedCheck/rendered-check.json` contains per-frame pacing intervals, streaming work, previous-completed-frame draw/batch/triangle counters, and GPU Frame Time where positive nanosecond samples are available. A missing GPU sample is -1, not zero cost. Hardware/API, actual resolution, original camera position, and a shared-edge normal-angle diagnostic are recorded. The route checks final coverage, overlay text, and streaming errors. Screenshots and `rendered-capture.raw` are saved beside the report. Frame intervals include pacing, UI, profiling, screenshot capture, and scheduling; this is a smoke check, not release-build FPS validation. `-Benchmark -RenderedCheck` runs both checks sequentially.
+
+Counter meanings: [Unity profiler counters](https://docs.unity3d.com/6000.3/Documentation/Manual/profiler-counters-reference.html). GPU profiling support depends on platform/API/settings: [GPU Usage Profiler](https://docs.unity3d.com/6000.3/Documentation/Manual/ProfilerGPU.html).
 
 API references: [ProfilerRecorder](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Unity.Profiling.ProfilerRecorder.html), [ProfilerRecorderOptions](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Unity.Profiling.ProfilerRecorderOptions.html), [ProfilerMarker.Auto](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Unity.Profiling.ProfilerMarker.Auto.html).
 

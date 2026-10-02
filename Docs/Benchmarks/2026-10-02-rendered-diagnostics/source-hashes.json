@@ -1,0 +1,38 @@
+[
+  {
+    "path": "Assets/Script/Core/ChunkController.cs",
+    "sha256": "6B525519DECF68F1042B51D08A5A45055AA31DD1FD6BC2B6CF407AFF25E5AF84"
+  },
+  {
+    "path": "Assets/Script/Core/StreamingDebugOverlay.cs",
+    "sha256": "99AEEB9BACBF0902C2026054D5A7F19276F5A06FA24BDACBCBF0B52CE5225C7D"
+  },
+  {
+    "path": "Assets/Script/Core/StreamingDebugOverlay.cs.meta",
+    "sha256": "74B87C4402FCAB61C94641CBCEFC8EF0CDAF1DC2EB90D84B079EE5ECD2EAF0AF"
+  },
+  {
+    "path": "Assets/Script/Core/TerrainGenerator.cs",
+    "sha256": "84005179FF40CC1FFB312B842A0C91A7758E4BE5E4D4E645BB2873D33DB679D6"
+  },
+  {
+    "path": "Assets/Scenes/MainScene.unity",
+    "sha256": "16C12F5EB82FCAE32F9388A86F8B58F5F26F8ABF721616144B26E1FBE91C6D5C"
+  },
+  {
+    "path": "Tools/Profiling/TerrainRenderedCheck.cs",
+    "sha256": "2857F4B88C91C7710F05E71C9F32C5D4DEAED4D7EC8B9C28D3EE15FCFD6684AB"
+  },
+  {
+    "path": "Tools/Validation/V0Validation.cs",
+    "sha256": "85DD9CA0A25382D633081B3F20EA11E21700E41FE3A1DA4771FD158809C69D94"
+  },
+  {
+    "path": "Packages/manifest.json",
+    "sha256": "A7860488B9D87E669DE7D8F3B1330CB3D75A67EB88D0503AD3607FEB718A36EB"
+  },
+  {
+    "path": "ProjectSettings/ProjectSettings.asset",
+    "sha256": "0D12CE527FC83FC512A3AD8CF08D83114D0A17CEBA1D941AA1DFB2069B86F984"
+  }
+]

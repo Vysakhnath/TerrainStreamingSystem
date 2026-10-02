@@ -33,6 +33,8 @@ Missing coordinates are queued once, sorted by squared distance from the Drone's
 
 `ActiveChunkCount`, `PendingChunkCount`, `GeneratedChunksThisFrame`, and `GenerationPaused` expose current status. A generation failure returns the acquired object, keeps the request queued, and pauses further generation to prevent repeated error logs. Moving to another tile or changing the buffer/retention settings rebuilds requests and resumes generation; restoring the generator's configuration alone does not retry automatically.
 
+MainScene's development overlay also displays current-frame streaming time and StreamingErrorCount/LastStreamingError. Error history includes dependency/configuration failures and persists through recovery until scene reload. F3 toggles the overlay; Editor gizmos show requested/retained boundaries. `Verify-V0.ps1 -RenderedCheck` builds and runs the visible graphics route described in the [profiling instructions](../Profiling/README.md).
+
 The correctness harness lets normal startup finish, then uses a large count cap and no time limit for existing coverage checks. Separate budgeted checks use one chunk per frame, rapid teleports, a shrinking buffer, and a tiny time limit. Budgeted profiling scenarios report time/frames to full coverage as well as per-frame CPU costs.
 
 The expected failure test sets resolution to zero and accepts only the generator's matching ArgumentOutOfRangeException. It verifies recovery at the next chunk boundary; automatic stationary retry is not implemented.

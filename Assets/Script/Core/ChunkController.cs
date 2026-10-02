@@ -14,6 +14,15 @@ public class ChunkController : MonoBehaviour
     public int PendingChunkCount => requestedChunks.Count - nextRequest;
     public int GeneratedChunksThisFrame { get; private set; }
     public bool GenerationPaused => generationPaused;
+    public Vector2Int CurrentPlayerChunk => initialized || playerPosition == null ? currentPlayerChunk : GetChunkFromCoord(playerPosition.position);
+    public float ChunkSize => chunkSize;
+    public int RequestedRadius => chunkBufferCount;
+    public int RetentionRadius => chunkBufferCount + chunkRetentionMargin;
+    public int StreamingErrorCount { get; private set; }
+    public string LastStreamingError { get; private set; }
+    public double StreamingMillisecondsThisFrame => streamingFrame == Time.frameCount ? streamingMilliseconds : 0;
+    private int streamingFrame = -1;
+    private double streamingMilliseconds;
     [SerializeField]
     private Transform playerPosition;
 
@@ -66,12 +75,14 @@ public class ChunkController : MonoBehaviour
     {
         if (playerPosition == null || poolManager == null || terrainGenerator == null)
         {
+            RecordError("Assign the tracked transform, chunk pool, and terrain generator before starting terrain streaming.");
             Debug.LogError("Assign the tracked transform, chunk pool, and terrain generator before starting terrain streaming.", this);
             enabled = false;
             return;
         }
         if (!poolManager.ValidateConfiguration() || !terrainGenerator.Initialize())
         {
+            RecordError("Terrain dependencies failed validation. See the Console for details.");
             enabled = false;
             return;
         }
@@ -86,6 +97,7 @@ public class ChunkController : MonoBehaviour
         if (!initialized) return;
         if (playerPosition == null || poolManager == null || terrainGenerator == null)
         {
+            RecordError("A terrain streaming dependency was destroyed. Streaming has been disabled.");
             Debug.LogError("A terrain streaming dependency was destroyed. Streaming has been disabled.", this);
             enabled = false;
             return;
@@ -148,10 +160,14 @@ public class ChunkController : MonoBehaviour
         {
             // Keep the failed request queued; retry only after a neighborhood/configuration change.
             generationPaused = true;
+            RecordError(exception.Message);
             Debug.LogException(exception, this);
         }
         finally
         {
+            if (streamingFrame != Time.frameCount) streamingMilliseconds = 0;
+            streamingFrame = Time.frameCount;
+            streamingMilliseconds += (Stopwatch.GetTimestamp() - started) * 1000.0 / Stopwatch.Frequency;
             isUpdating = false;
             lastChunkBufferCount = chunkBufferCount;
             lastChunkRetentionMargin = chunkRetentionMargin;
@@ -220,5 +236,11 @@ public class ChunkController : MonoBehaviour
         if (comparison != 0) return comparison;
         comparison = a.x.CompareTo(b.x);
         return comparison != 0 ? comparison : a.y.CompareTo(b.y);
+    }
+
+    private void RecordError(string message)
+    {
+        StreamingErrorCount++;
+        LastStreamingError = message;
     }
 }

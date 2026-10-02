@@ -1,6 +1,7 @@
 param(
     [string]$UnityPath = 'C:/Program Files/Unity/Hub/Editor/6000.3.12f1/Editor/Unity.exe',
     [switch]$Benchmark,
+    [switch]$RenderedCheck,
     [ValidateRange(0, 600)][int]$SoakSeconds = 180
 )
 $ErrorActionPreference = 'Stop'
@@ -14,10 +15,11 @@ foreach ($folder in @('Assets', 'Packages', 'ProjectSettings')) {
 $editorRoot = Join-Path $runRoot 'Assets/Editor'
 New-Item -ItemType Directory -Path $editorRoot -Force | Out-Null
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'V0Validation.cs') -Destination $editorRoot
-if ($Benchmark) {
+if ($Benchmark -or $RenderedCheck) {
     $benchmarkAssets = Join-Path $runRoot 'Assets/Benchmark'
     New-Item -ItemType Directory -Path $benchmarkAssets -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $projectRoot 'Tools/Profiling/TerrainBenchmark.cs') -Destination $benchmarkAssets
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'Tools/Profiling/TerrainRenderedCheck.cs') -Destination $benchmarkAssets
 }
 $logPath = Join-Path $runRoot 'validation.log'
 Write-Output "Validation copy: $runRoot"
@@ -60,4 +62,22 @@ if ($Benchmark) {
         throw "Player benchmark failed. See $playerLog"
     }
     Write-Output "Benchmark results: $benchmarkOutput"
+}
+
+if ($RenderedCheck) {
+    $renderedOutput = Join-Path $runRoot 'RenderedCheck'
+    $renderedLog = Join-Path $runRoot 'rendered-player.log'
+    $renderedPlayerPath = Join-Path $runRoot 'Builds/Validation/DroneTerrainSystem.exe'
+    $renderedPlayer = Start-Process -FilePath $renderedPlayerPath -ArgumentList "-terrainRenderedCheck -renderedOutput `"$renderedOutput`" -screen-fullscreen 0 -screen-width 1280 -screen-height 720 -logFile `"$renderedLog`"" -WindowStyle Normal -PassThru
+    $renderedDeadline = [DateTime]::UtcNow.AddMinutes(3)
+    while (!$renderedPlayer.WaitForExit(1000)) {
+        if ([DateTime]::UtcNow -gt $renderedDeadline) {
+            Stop-Process -Id $renderedPlayer.Id
+            throw "Rendered check timed out. See $renderedLog"
+        }
+    }
+    if ($renderedPlayer.ExitCode -ne 0 -or !(Test-Path -LiteralPath (Join-Path $renderedOutput 'completed.txt'))) {
+        throw "Rendered check failed. See $renderedLog"
+    }
+    Write-Output "Rendered check results: $renderedOutput"
 }
